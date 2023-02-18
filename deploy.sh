@@ -3,6 +3,7 @@
 # abort on errors
 set -e
 
+git branch -d origin/gh-pages
 
 git checkout gh-pages
 git push -u origin gh-pages
