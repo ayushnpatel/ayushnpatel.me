@@ -13,4 +13,4 @@ git add dist -f
 git commit -m 'deploy'
 
 # if you are deploying to https://<USERNAME>.github.io
-git subtree push --prefix dist origin gh-pages
+git subtree push -f --prefix dist origin gh-pages
