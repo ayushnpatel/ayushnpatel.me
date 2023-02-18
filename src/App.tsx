@@ -67,7 +67,7 @@ function App() {
         <div id="spacer" className="h-2 md:h-5"></div>
         {!isMobile && (
           <div className="font-sans shadow-blue-900 drop-shadow-lg animate-text bg-gradient-to-r from-poppy via-dark-teal to-dark-azure bg-clip-text text-transparent text-sm lg:text-xl 2xl:text-2xl font-regular z-10">
-            I'm a software engineer whose worked at a couple of companies.
+            I'm a software engineer.<br></br>
             Mostly interested in backend engineering, including infrastructure
             and distributed systems. <br></br> I've worked at...
           </div>
