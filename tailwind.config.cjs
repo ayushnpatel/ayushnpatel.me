@@ -10,7 +10,9 @@ module.exports = {
         '88': '22rem',
         '59': '14.66rem',
         '27': '6.75rem',
-        '24.75': '6.19rem'
+        '24.75': '6.19rem',
+        '37.33': '6.66rem',
+        '78': '19.5rem'
       },
       fontFamily: {
         sans: ["Rubik", ...defaultTheme.fontFamily.sans],
