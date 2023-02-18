@@ -9,7 +9,8 @@ module.exports = {
       spacing: {
         '88': '22rem',
         '59': '14.66rem',
-        '27': '6.75rem'
+        '27': '6.75rem',
+        '24.75': '6.19rem'
       },
       fontFamily: {
         sans: ["Rubik", ...defaultTheme.fontFamily.sans],

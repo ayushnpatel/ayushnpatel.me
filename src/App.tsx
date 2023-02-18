@@ -8,6 +8,28 @@ import {
   faInstagram,
 } from "@fortawesome/free-brands-svg-icons";
 
+import ayush_pic from "./assets/ayush.jpeg";
+
+import c_icon from "./assets/tech_icons/c.png";
+import docker_icon from "./assets/tech_icons/docker.webp";
+import java_icon from "./assets/tech_icons/java.png";
+import next_js_icon from "./assets/tech_icons/next_js.png";
+import postgresql_icon from "./assets/tech_icons/postgresql.png";
+import python_icon from "./assets/tech_icons/python.png";
+import react_icon from "./assets/tech_icons/react.png";
+import typescript_icon from "./assets/tech_icons/typescript.png";
+
+import snackpass from "./assets/companies/snackpass.png";
+import capitalOne from "./assets/companies/capital_one.png";
+import appriss from "./assets/companies/appriss.png";
+
+import family from "./assets/images/family.jpg";
+import friends_1 from "./assets/images/IMG_1032.png";
+import dev from "./assets/images/IMG_1148.jpg";
+import shrad from "./assets/images/IMG_1565.png";
+import friends_2 from "./assets/images/IMG_2189.jpeg";
+import friends_3 from "./assets/images/IMG_2241.jpeg";
+
 import { Parallax, ParallaxLayer } from "@react-spring/parallax";
 import styles from "./styles.module.css";
 
@@ -55,21 +77,21 @@ function App() {
           <div className="font-sans grid grid-rows grid-cols-3 columns-md gap-x-6 -gap-y-12 text-sm md:text-2xl font-regular z-10 items-center">
             <div>
               <img
-                src="src/assets/companies/snackpass.png"
+                src={snackpass}
                 className={`w-12 h-12 shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10 ml-6`}
                 alt=""
               ></img>
             </div>
             <div>
               <img
-                src="src/assets/companies/capital_one.png"
+                src={capitalOne}
                 className={`w-32 h-18 shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10 mt-2`}
                 alt=""
               ></img>
             </div>
             <div>
               <img
-                src="src/assets/companies/appriss.png"
+                src={appriss}
                 className={`w-32 h-18 shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10 mt-2`}
                 alt=""
               ></img>
@@ -98,11 +120,11 @@ function App() {
           </div>
         )}
         {isDesktop && (
-          <div className="font-sans grid grid-rows grid-cols-2 columns-md gap-x-6 lg:gap-y-0 xl:gap-y-10 text-sm md:text-2xl font-regular z-10">
+          <div className="font-sans grid grid-rows grid-cols-2 columns-md gap-x-6 lg:gap-y-0 xl:gap-y-5 text-sm md:text-2xl font-regular z-10">
             <div>
               <img
-                src="src/assets/companies/snackpass.png"
-                className={`w-32 h-32 shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10 ml-6`}
+                src={snackpass}
+                className={`w-24 h-24 shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10 ml-8`}
                 alt=""
               ></img>
             </div>
@@ -117,8 +139,8 @@ function App() {
             </div>
             <div>
               <img
-                src="src/assets/companies/capital_one.png"
-                className={`w-48 h-27 shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10`}
+                src={capitalOne}
+                className={`w-44 h-24.75 shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10`}
                 alt=""
               ></img>
             </div>
@@ -134,8 +156,8 @@ function App() {
 
             <div>
               <img
-                src="src/assets/companies/appriss.png"
-                className={`w-48 h-27 shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10`}
+                src={appriss}
+                className={`w-44 h-24.75 shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10`}
                 alt=""
               ></img>
             </div>
@@ -150,7 +172,7 @@ function App() {
             </div>
           </div>
         )}
-        <div id="spacer" className="lg:h-6"></div>
+        <div id="spacer" className="lg:h-2"></div>
         {!isMobile && (
           <div className="font-sans shadow-blue-900 drop-shadow-lg animate-text bg-gradient-to-r from-poppy via-dark-teal to-dark-azure bg-clip-text text-transparent text-sm lg:text-2xl font-regular z-10">
             Reach out on LinkedIn for any inquies. <br></br> Hope you enjoyed my
@@ -172,7 +194,7 @@ function App() {
           <div id="spacer" className="h-2"></div>
           <div className="flex flex-col w-full h-screen justify-center items-center z-10">
             <img
-              src="src/assets/ayush.jpeg"
+              src={ayush_pic}
               className="w-64 h-64 md:w-96 md:h-96 rounded-full shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10"
               alt=""
             ></img>
@@ -227,7 +249,7 @@ function App() {
             <div className="font-sans shadow-blue-900 drop-shadow-lg  flex flex-row justify-center w-full items-center  z-10">
               <a className="" href="https://www.python.org">
                 <img
-                  src="src/assets/tech_icons/python.png"
+                  src={python_icon}
                   className="w-8 h-8 md:w-16 md:h-16 z-10 transition ease-in-out delay hover:scale-110"
                   alt=""
                 ></img>
@@ -235,7 +257,7 @@ function App() {
               <div className="w-1 md:w-3" />
               <a className="" href="https://www.typescriptlang.org">
                 <img
-                  src="src/assets/tech_icons/typescript.png"
+                  src={typescript_icon}
                   className="w-7 h-7 md:w-14 md:h-14 z-10 transition ease-in-out delay hover:scale-110"
                   alt=""
                 ></img>
@@ -243,7 +265,7 @@ function App() {
               <div className="w-1 md:w-3" />
               <a className="" href="https://www.java.com">
                 <img
-                  src="src/assets/tech_icons/java.png"
+                  src={java_icon}
                   className="w-8 h-8 md:w-14 md:h-14   z-10 transition ease-in-out delay hover:scale-110"
                   alt=""
                 ></img>
@@ -254,7 +276,7 @@ function App() {
                 href="https://en.wikipedia.org/wiki/C_(programming_language)l"
               >
                 <img
-                  src="src/assets/tech_icons/c.png"
+                  src={c_icon}
                   className="w-7 h-8 md:w-14 md:h-16   z-10 transition ease-in-out delay hover:scale-110"
                   alt=""
                 ></img>
@@ -262,7 +284,7 @@ function App() {
               <div className="w-1 md:w-3" />
               <a className="" href="https://reactjs.org/">
                 <img
-                  src="src/assets/tech_icons/react.png"
+                  src={react_icon}
                   className="w-8 h-7 md:w-16 md:h-14 z-10 transition ease-in-out delay hover:scale-110"
                   alt=""
                 ></img>
@@ -270,7 +292,7 @@ function App() {
               <div className="w-1 md:w-3" />
               <a className="" href="https://www.postgresql.org/">
                 <img
-                  src="src/assets/tech_icons/postgresql.png"
+                  src={postgresql_icon}
                   className="w-8 h-8 md:w-16 md:h-16 z-10 transition ease-in-out delay hover:scale-110"
                   alt=""
                 ></img>
@@ -278,7 +300,7 @@ function App() {
               <div className="w-2 md:w-4" />
               <a className="" href="https://www.docker.com/">
                 <img
-                  src="src/assets/tech_icons/docker.webp"
+                  src={docker_icon}
                   className="w-8 h-8 md:w-16 md:h-16 z-10 transition ease-in-out delay hover:scale-110"
                   alt=""
                 ></img>
@@ -286,7 +308,7 @@ function App() {
               <div className="w-2 md:w-4" />
               <a className="" href="https://www.nextjs.org/">
                 <img
-                  src="src/assets/tech_icons/next_js.png"
+                  src={next_js_icon}
                   className="w-10 h-7 md:w-24 md:h-16 z-10 transition ease-in-out delay hover:scale-110"
                   alt=""
                 ></img>
@@ -301,7 +323,7 @@ function App() {
         style={{
           ...alignCenter,
           justifyContent: `${isMobile ? "center" : "start"}`,
-          paddingTop: `${isMobile ? "2%" : "0%"}`,
+          paddingTop: `${isMobile ? "2%" : "2%"}`,
         }}
       >
         <AboutMeComponent />
@@ -313,56 +335,56 @@ function App() {
         style={{
           ...alignCenter,
           justifyContent: `${isMobile ? "center" : "flex-end"}`,
-          paddingTop: `${isMobile ? "40%" : "46vh"}`,
-          paddingBottom: `${isDesktop ? "50vh" : "0%"}`,
+          paddingTop: `${isMobile ? "20vh" : "12vh"}`,
+          // paddingBottom: `${isMobile ? "40vh" : "0vh"}`
         }}
         className="pb-24"
       >
         <div
           className={`${
             isDesktop && styles.parallax
-          } grid md:grid-rows-2 grid-cols-1 md:grid-cols-2 md:gap-6 md:gap-y-0 `}
+          } grid md:grid-rows-2 grid-cols-1 md:grid-cols-2 md:gap-x-6 gap-y-0`}
         >
           <img
-            src="src/assets/images/IMG_2189.jpeg"
-            className={`row-span-2 lg:row-span-1 w-60 h-40 xl:w-88 xl:h-59 mt-9 md:mt-8 shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10 rounded-xl`}
+            src={friends_2}
+            className={`row-span-2 lg:row-span-1 w-60 h-40 xl:w-88 xl:h-59 mt-9 md:mt-1 shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10 rounded-xl`}
             alt=""
           ></img>
           <img
-            src="src/assets/images/family.jpg"
+            src={family}
             className={`${
               isDesktop && styles.parallax
-            } row-span-2 lg:row-span-1 w-60 h-40 xl:w-88 xl:h-59 mt-5 md:mt-8 shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10  rounded-xl`}
+            } row-span-2 lg:row-span-1 w-60 h-40 xl:w-88 xl:h-59 mt-5 md:mt-1 shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10  rounded-xl`}
             alt=""
           ></img>
           <img
-            src="src/assets/images/IMG_1565.png"
+            src={shrad}
             className={`${
               isDesktop && styles.parallax
-            } row-span-2 lg:row-span-1 w-60 h-40 xl:w-88 xl:h-59 mt-5 md:mt-8 shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10  rounded-xl`}
-            alt=""
-          ></img>
-
-          <img
-            src="src/assets/images/IMG_1032.png"
-            className={`${
-              isDesktop && styles.parallax
-            } invisible md:visible row-span-2 lg:row-span-1 w-60 h-40 xl:w-88 xl:h-59 mt-8 shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10  rounded-xl`}
-            alt=""
-          ></img>
-          <img
-            src="src/assets/images/IMG_1148.jpg"
-            className={`${
-              isDesktop && styles.parallax
-            } invisible md:visible row-span-2 lg:row-span-1 w-60 h-40 xl:w-88 xl:h-59 mt-8 shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10  rounded-xl`}
+            } row-span-2 lg:row-span-1 w-60 h-40 xl:w-88 xl:h-59 mt-5 md:mt-1 shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10  rounded-xl`}
             alt=""
           ></img>
 
           <img
-            src="src/assets/images/IMG_2241.jpeg"
+            src={friends_1}
             className={`${
               isDesktop && styles.parallax
-            } invisible md:visible row-span-2 lg:row-span-1 w-60 h-40 xl:w-88 xl:h-59 mt-8 shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10  rounded-xl`}
+            } invisible md:visible row-span-2 lg:row-span-1 w-60 h-40 xl:w-88 xl:h-59 mt-1 shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10  rounded-xl`}
+            alt=""
+          ></img>
+          <img
+            src={dev}
+            className={`${
+              isDesktop && styles.parallax
+            } invisible md:visible row-span-2 lg:row-span-1 w-60 h-40 xl:w-88 xl:h-59 mt-1 shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10  rounded-xl`}
+            alt=""
+          ></img>
+
+          <img
+            src={friends_3}
+            className={`${
+              isDesktop && styles.parallax
+            } invisible md:visible row-span-2 lg:row-span-1 w-60 h-40 xl:w-88 xl:h-59 mt-1 shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10  rounded-xl`}
             alt=""
           ></img>
         </div>
