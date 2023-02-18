@@ -191,11 +191,11 @@ function App() {
           ))}
         </div>
         <div className="App transition-all">
-          <div id="spacer" className="h-2"></div>
+          <div id="spacer" className="h-1/6 md:h-2"></div>
           <div className="flex flex-col w-full h-screen justify-center items-center z-10">
             <img
               src={ayush_pic}
-              className="w-64 h-64 md:w-64 md:h-64 rounded-full shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10"
+              className="w-52 h-52 md:w-64 md:h-64 rounded-full shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10"
               alt=""
             ></img>
             <div id="spacer" className="h-12"></div>
@@ -211,7 +211,7 @@ function App() {
               <a className="" href="https://www.linkedin.com/in/ayushnpatel">
                 <FontAwesomeIcon
                   icon={faLinkedin}
-                  className="font-sans transition ease-in-out delay hover:scale-110 h-12 md:h-12 text-dark-azure hover:text-indigo-400"
+                  className="font-sans transition ease-in-out delay hover:scale-110 h-9 md:h-12 text-dark-azure hover:text-indigo-400"
                 />
               </a>
               <div className="w-6" />
@@ -221,7 +221,7 @@ function App() {
               >
                 <FontAwesomeIcon
                   icon={faGithub}
-                  className="h-12 md:h-12 transition ease-in-out delay hover:scale-110 text-dark-azure hover:text-indigo-400"
+                  className="h-9 md:h-12 transition ease-in-out delay hover:scale-110 text-dark-azure hover:text-indigo-400"
                 />
               </a>
               <div className="w-6" />
@@ -231,7 +231,7 @@ function App() {
               >
                 <FontAwesomeIcon
                   icon={faInstagram}
-                  className="h-12 md:h-12 transition ease-in-out delay hover:scale-110 text-dark-azure hover:text-indigo-400"
+                  className="h-9 md:h-12 transition ease-in-out delay hover:scale-110 text-dark-azure hover:text-indigo-400"
                 />
               </a>
               <div className="w-6" />
@@ -241,7 +241,7 @@ function App() {
               >
                 <FontAwesomeIcon
                   icon={faNewspaper}
-                  className="h-12 md:h-12 transition ease-in-out delay hover:scale-110 text-dark-azure hover:text-indigo-400"
+                  className="h-9 md:h-12 transition ease-in-out delay hover:scale-110 text-dark-azure hover:text-indigo-400"
                 />
               </a>
             </div>
@@ -323,7 +323,7 @@ function App() {
         style={{
           ...alignCenter,
           justifyContent: `${isMobile ? "center" : "start"}`,
-          paddingTop: `${isMobile ? "12%" : "2%"}`,
+          paddingTop: `${isMobile ? "4vh" : "2vh"}`,
         }}
         speed={1.5}
       >
@@ -346,25 +346,25 @@ function App() {
         <div
           className={`${
             isDesktop && styles.parallax
-          } grid md:grid-rows-2 grid-cols-1 md:grid-cols-2 md:gap-x-6 md:gap-y-6`}
+          } grid md:grid-rows-3  grid-cols-1 lg:grid-cols-2 md:gap-x-6 md:gap-y-6`}
         >
           <img
             src={friends_2}
-            className={`row-span-2 lg:row-span-1 w-60 h-40 xl:w-78 xl:h-52 mt-9 md:mt-1 shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10 rounded-xl`}
+            className={`row-span-2 md:row-span-1 w-48 h-32 xl:w-78 xl:h-52 mt-9 md:mt-1 shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10 rounded-xl`}
             alt=""
           ></img>
           <img
             src={family}
             className={`${
               isDesktop && styles.parallax
-            } row-span-2 lg:row-span-1 w-60 h-40 xl:w-78 xl:h-52 mt-5 md:mt-1 shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10  rounded-xl`}
+            } row-span-2 md:row-span-1 w-48 h-32 xl:w-78 xl:h-52 mt-5 md:mt-1 shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10  rounded-xl`}
             alt=""
           ></img>
           <img
             src={shrad}
             className={`${
               isDesktop && styles.parallax
-            } row-span-2 lg:row-span-1 w-60 h-40 xl:w-78 xl:h-52 mt-5 md:mt-1 shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10  rounded-xl`}
+            } row-span-2 md:row-span-1 w-48 h-32 xl:w-78 xl:h-52 mt-5 md:mt-1 shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10  rounded-xl`}
             alt=""
           ></img>
 
@@ -372,14 +372,14 @@ function App() {
             src={friends_1}
             className={`${
               isDesktop && styles.parallax
-            } invisible md:visible row-span-2 lg:row-span-1 w-60 h-40 xl:w-78 xl:h-52 mt-1 shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10  rounded-xl`}
+            } invisible md:visible row-span-2 lg:row-span-1 w-48 h-32 xl:w-78 xl:h-52 mt-1 shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10  rounded-xl`}
             alt=""
           ></img>
           <img
             src={dev}
             className={`${
               isDesktop && styles.parallax
-            } invisible md:visible row-span-2 lg:row-span-1 w-60 h-40 xl:w-78 xl:h-52 mt-1 shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10  rounded-xl`}
+            } invisible md:visible row-span-2 lg:row-span-1 w-48 h-32 xl:w-78 xl:h-52 mt-1 shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10  rounded-xl`}
             alt=""
           ></img>
 
@@ -387,7 +387,7 @@ function App() {
             src={friends_3}
             className={`${
               isDesktop && styles.parallax
-            } invisible md:visible row-span-2 lg:row-span-1 w-60 h-40 xl:w-78 xl:h-52 mt-1 shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10  rounded-xl`}
+            } invisible md:visible row-span-2 md:row-span-1 w-48 h-32 xl:w-78 xl:h-52 mt-1 shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10  rounded-xl`}
             alt=""
           ></img>
         </div>
