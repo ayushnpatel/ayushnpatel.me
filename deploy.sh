@@ -3,6 +3,11 @@
 # abort on errors
 set -e
 
+
+git checkout gh-pages
+git push -u origin gh-pages
+git checkout main
+
 # build
 npm run build
 
