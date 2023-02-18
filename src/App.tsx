@@ -140,7 +140,7 @@ function App() {
             <div>
               <img
                 src={capitalOne}
-                className={`w-44 h-24.75 shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10`}
+                className={`w-44 h-24.75 shadow-blue-800 drop-shadow-2xl transition ease-in-out delay hover:scale-110 z-10 `}
                 alt=""
               ></img>
             </div>
@@ -199,11 +199,11 @@ function App() {
               alt=""
             ></img>
             <div id="spacer" className="h-12"></div>
-            <div className="font-sans shadow-blue-900 drop-shadow-lg  animate-text bg-gradient-to-r from-aerospace-orange via-dark-azure to-poppy bg-clip-text text-transparent text-2xl md:text-3xl font-extrabold z-10">
+            <div className="font-sans shadow-blue-900 drop-shadow-lg  animate-text bg-gradient-to-r from-dark-indigo via-indigo-400 to-dark-indigo bg-clip-text text-transparent text-2xl md:text-3xl font-extrabold z-10">
               Ayush Patel
             </div>
             <div id="spacer" className="h-4"></div>
-            <div className="font-sans shadow-blue-900 drop-shadow-lg animate-text bg-gradient-to-r from-slate-grey via-indigo-700 to-eerie-black bg-clip-text text-transparent text-xl md:text-xl font-extrabold z-10">
+            <div className="font-sans shadow-blue-900 drop-shadow-lg animate-text bg-gradient-to-r from-dark-azure via-dark-indigo to-eerie-black bg-clip-text text-transparent text-xl md:text-xl font-extrabold z-10">
               swe intern @ snackpass
             </div>
             <div id="spacer" className="h-6"></div>

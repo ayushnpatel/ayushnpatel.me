@@ -7,12 +7,12 @@ module.exports = {
   theme: {
     extend: {
       spacing: {
-        '88': '22rem',
-        '59': '14.66rem',
-        '27': '6.75rem',
-        '24.75': '6.19rem',
-        '37.33': '6.66rem',
-        '78': '19.5rem'
+        88: "22rem",
+        59: "14.66rem",
+        27: "6.75rem",
+        24.75: "6.19rem",
+        37.33: "6.66rem",
+        78: "19.5rem",
       },
       fontFamily: {
         sans: ["Rubik", ...defaultTheme.fontFamily.sans],
@@ -22,8 +22,9 @@ module.exports = {
         "eerie-black": "#171D1C",
         "aerospace-orange": "#FF500A",
         "dark-azure": "#042225",
-        "alice-blue":'#F0F8FF',
+        "alice-blue": "#F0F8FF",
         "dark-teal": "#013a2f",
+        "dark-indigo": "#1F0954",
         poppy: "#DD4045",
       },
       animation: {
