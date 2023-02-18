@@ -1,22 +1,25 @@
-#!/usr/bin/env sh
-
 # abort on errors
 set -e
-
-git branch -d origin/gh-pages
-
-git checkout gh-pages
-git push -u origin gh-pages
-git checkout main
 
 # build
 npm run build
 
-# add dist
-git add dist -f
+# navigate into the build output directory
+cd dist
+
+# place .nojekyll to bypass Jekyll processing
+echo > .nojekyll
 
 # if you are deploying to a custom domain
+echo 'www.ayushnpatel.me' > CNAME
+
+git init
+git checkout -B main
+git add -A
 git commit -m 'deploy'
 
 # if you are deploying to https://<USERNAME>.github.io
-git subtree push --prefix dist origin gh-pages
+# git push -f git@github.com:<USERNAME>/<USERNAME>.github.io.git main
+
+# if you are deploying to https://<USERNAME>.github.io/<REPO>
+git push -f git@github.com:ayushnpatel/ayushnpatel.github.io.git main:gh-pages
