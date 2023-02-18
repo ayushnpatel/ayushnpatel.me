@@ -49,7 +49,7 @@ function App() {
   const isMobile = width <= 768;
   const isDesktop = width > 768;
 
-  console.log(isMobile);
+  // console.log(isMobile);
 
   const alignCenter = {
     display: "flex",
