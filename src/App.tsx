@@ -184,7 +184,7 @@ function App() {
   };
   return (
     <Parallax pages={3.25}>
-      <ParallaxLayer speed={1} factor={1} offset={0}>
+      <ParallaxLayer speed={.5} factor={1} offset={0}>
         <div className="container">
           {Array.from({ length: 99 }, (_, i) => i).map((_) => (
             <div className="snowflake"></div>
@@ -325,13 +325,13 @@ function App() {
           justifyContent: `${isMobile ? "center" : "start"}`,
           paddingTop: `${isMobile ? "4vh" : "2vh"}`,
         }}
-        speed={1.5}
+        speed={.5}
       >
         <AboutMeComponent />
       </ParallaxLayer>
       <ParallaxLayer
         offset={2}
-        speed={isMobile ? 0.2 : 1.5}
+        speed={isMobile ? 0.2 : .25}
         sticky={{ start: 2, end: 3 }}
         style={{
           ...alignCenter,
