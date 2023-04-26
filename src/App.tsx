@@ -33,6 +33,8 @@ import friends_3 from "./assets/images/IMG_2241.jpeg";
 import { Parallax, ParallaxLayer } from "@react-spring/parallax";
 import styles from "./styles.module.css";
 
+import { Analytics } from "@vercel/analytics/react";
+
 function App() {
   const [width, setWidth] = useState<number>(window.innerWidth);
 
@@ -184,7 +186,7 @@ function App() {
   };
   return (
     <Parallax pages={3.25}>
-      <ParallaxLayer speed={.5} factor={1} offset={0}>
+      <ParallaxLayer speed={0.5} factor={1} offset={0}>
         <div className="container">
           {Array.from({ length: 99 }, (_, i) => i).map((_) => (
             <div className="snowflake"></div>
@@ -325,22 +327,21 @@ function App() {
           justifyContent: `${isMobile ? "center" : "start"}`,
           paddingTop: `${isMobile ? "4vh" : "2vh"}`,
         }}
-        speed={.5}
+        speed={0.5}
       >
         <AboutMeComponent />
       </ParallaxLayer>
       <ParallaxLayer
         offset={2}
-        speed={isMobile ? 0.2 : .25}
+        speed={isMobile ? 0.2 : 0.25}
         sticky={{ start: 2, end: 3 }}
         style={{
           ...alignCenter,
           justifyContent: `${isMobile ? "center" : "flex-end"}`,
           paddingTop: `${isMobile ? "22vh" : "12vh"}`,
-          paddingRight: `${isDesktop ? "4vw" : "0vw"}`
+          paddingRight: `${isDesktop ? "4vw" : "0vw"}`,
           // paddingBottom: `${isMobile ? "40vh" : "0vh"}`
         }}
-        
         className="pb-24"
       >
         <div
@@ -392,6 +393,7 @@ function App() {
           ></img>
         </div>
       </ParallaxLayer>
+      <Analytics />
     </Parallax>
   );
 }
