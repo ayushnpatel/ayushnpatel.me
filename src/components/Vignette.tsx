@@ -1,13 +1,20 @@
-import { useEffect, useRef } from 'react';
-import * as THREE from 'three';
+import { useEffect, useRef } from "react";
+import * as THREE from "three";
 
 interface VignetteProps {
-  intensity?: number; // 0-1, default 0.4
+  intensity?: number; // 0-1, default 0.4 (optional override)
+  colorTheme?: string; // Theme name to trigger color re-read
+  isDark?: boolean; // Keep in sync with theme toggle
 }
 
 function getCSSColor(property: string): THREE.Color {
   const root = getComputedStyle(document.documentElement);
   const colorValue = root.getPropertyValue(property).trim();
+
+  // Handle hex colors (for neo-brutalism)
+  if (colorValue.startsWith("#")) {
+    return new THREE.Color(colorValue);
+  }
 
   // Parse OKLCH format
   const match = colorValue.match(/oklch\(([\d.]+)%\s+([\d.]+)\s+([\d.]+)\)/);
@@ -29,49 +36,83 @@ function getCSSColor(property: string): THREE.Color {
     return new THREE.Color(r, g, blue);
   }
 
-  // Fallback
+  // Fallback - try to parse as any valid color
   return new THREE.Color(colorValue);
 }
 
-export function Vignette({ intensity = 0.4 }: VignetteProps) {
+export function Vignette({ intensity, colorTheme, isDark }: VignetteProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const materialRef = useRef<THREE.ShaderMaterial | null>(null);
+  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
+  const sceneRef = useRef<THREE.Scene | null>(null);
+  const cameraRef = useRef<THREE.OrthographicCamera | null>(null);
+  const meshRef = useRef<THREE.Mesh | null>(null);
 
   useEffect(() => {
     if (!canvasRef.current) return;
-    if (window.innerWidth < 768) return;
+    if (materialRef.current) return; // Don't recreate if already initialized
 
     const canvas = canvasRef.current;
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+    let width = window.innerWidth;
+    let height = window.innerHeight;
 
     const scene = new THREE.Scene();
+    sceneRef.current = scene;
+
+    // Orthographic camera covering 0..width, height..0 (top-left origin style)
+    // Actually standard Three.js ortho is center based or arbitrary.
+    // Previous code: 0, width, height, 0.
     const camera = new THREE.OrthographicCamera(0, width, height, 0, -100, 100);
     camera.position.z = 10;
+    cameraRef.current = camera;
 
     const renderer = new THREE.WebGLRenderer({
       canvas,
       alpha: true,
-      antialias: true
+      antialias: true,
     });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setClearColor(0x000000, 0);
+    rendererRef.current = renderer;
 
     // Get vignette colors from CSS custom properties
-    const isDark = document.documentElement.classList.contains('dark');
-    const vignetteColor1 = getCSSColor('--vignette-color-1');
-    const vignetteColor2 = getCSSColor('--vignette-color-2');
+    const initialIsDark =
+      typeof isDark === "boolean"
+        ? isDark
+        : document.documentElement.classList.contains("dark");
+    const blendingMode = initialIsDark
+      ? THREE.AdditiveBlending
+      : THREE.NormalBlending;
+    const vignetteColor1 = getCSSColor("--vignette-color-1");
+    const vignetteColor2 = getCSSColor("--vignette-color-2");
+    const vignetteColor3 = getCSSColor("--vignette-color-3") || vignetteColor2;
+    const vignetteColor4 = getCSSColor("--vignette-color-4") || vignetteColor1;
+    const vignetteColor5 = getCSSColor("--vignette-color-5") || vignetteColor2;
+    const vignetteColor6 = getCSSColor("--vignette-color-6") || vignetteColor1;
 
     // Create vignette/shadow effect with flowing waves
-    const vignetteGeometry = new THREE.PlaneGeometry(width, height, 1, 1);
+    // Use unit plane and scale it to fit screen
+    const vignetteGeometry = new THREE.PlaneGeometry(1, 1, 1, 1);
     const vignetteMaterial = new THREE.ShaderMaterial({
       uniforms: {
         time: { value: 0 },
         resolution: { value: new THREE.Vector2(width, height) },
         color1: { value: vignetteColor1 },
         color2: { value: vignetteColor2 },
-        intensity: { value: intensity },
-        isDark: { value: isDark ? 1.0 : 0.0 }
+        color3: { value: vignetteColor3 },
+        color4: { value: vignetteColor4 },
+        color5: { value: vignetteColor5 },
+        color6: { value: vignetteColor6 },
+        intensity: {
+          value:
+            intensity !== undefined
+              ? intensity
+              : colorTheme === "neo-brutalism"
+              ? 1.0
+              : 0.5,
+        },
+        isDark: { value: initialIsDark ? 1.0 : 0.0 },
       },
       vertexShader: `
         varying vec2 vUv;
@@ -85,6 +126,10 @@ export function Vignette({ intensity = 0.4 }: VignetteProps) {
         uniform vec2 resolution;
         uniform vec3 color1;
         uniform vec3 color2;
+        uniform vec3 color3;
+        uniform vec3 color4;
+        uniform vec3 color5;
+        uniform vec3 color6;
         uniform float intensity;
         uniform float isDark;
         varying vec2 vUv;
@@ -117,9 +162,12 @@ export function Vignette({ intensity = 0.4 }: VignetteProps) {
           float wave1 = sin(dist * 15.0 - time * 1.5) * 0.5 + 0.5;
           float wave2 = sin(dist * 20.0 + time * 2.0) * 0.5 + 0.5;
           float wave3 = sin(uv.x * 10.0 - time * 1.2) * sin(uv.y * 10.0 + time * 0.8);
+          float wave4 = sin(uv.x * 8.0 + time * 1.8) * 0.5 + 0.5;
+          float wave5 = sin(uv.y * 12.0 - time * 1.5) * 0.5 + 0.5;
+          float wave6 = sin((uv.x + uv.y) * 6.0 + time * 2.2) * 0.5 + 0.5;
 
           // Combine waves
-          float waves = wave1 * 0.4 + wave2 * 0.3 + wave3 * 0.3;
+          float waves = wave1 * 0.25 + wave2 * 0.2 + wave3 * 0.2 + wave4 * 0.15 + wave5 * 0.1 + wave6 * 0.1;
 
           // Create vignette effect - stronger at edges, adjusted for light/dark mode
           float vignetteStart = isDark > 0.5 ? 0.3 : 0.25;
@@ -130,48 +178,66 @@ export function Vignette({ intensity = 0.4 }: VignetteProps) {
           float pulse = sin(time * 0.8) * 0.15 + 0.85;
           vignette *= pulse;
 
-          // Smoothly rotate between colors in HSV space
-          vec3 hsv1 = rgb2hsv(color1);
-          vec3 hsv2 = rgb2hsv(color2);
+          // Fixed, theme-driven colors (no hue cycling)
+          vec3 baseColor1 = color1;
+          vec3 baseColor2 = color2;
+          vec3 baseColor3 = color3;
+          vec3 baseColor4 = color4;
+          vec3 baseColor5 = color5;
+          vec3 baseColor6 = color6;
 
-          // Slowly rotate hue over time (full rotation every 20 seconds)
-          float hueShift = time * 0.05;
-
-          // Increase saturation for light mode visibility
+          // Light mode: desaturate a bit so it stays professional/subtle (apply to all colors)
           if (isDark < 0.5) {
-            hsv1.y = min(1.0, hsv1.y * 1.4); // Boost saturation
-            hsv2.y = min(1.0, hsv2.y * 1.4);
+            float grey1 = dot(baseColor1, vec3(0.299, 0.587, 0.114));
+            float grey2 = dot(baseColor2, vec3(0.299, 0.587, 0.114));
+            float grey3 = dot(baseColor3, vec3(0.299, 0.587, 0.114));
+            float grey4 = dot(baseColor4, vec3(0.299, 0.587, 0.114));
+            float grey5 = dot(baseColor5, vec3(0.299, 0.587, 0.114));
+            float grey6 = dot(baseColor6, vec3(0.299, 0.587, 0.114));
+            baseColor1 = mix(vec3(grey1), baseColor1, 0.6);
+            baseColor2 = mix(vec3(grey2), baseColor2, 0.6);
+            baseColor3 = mix(vec3(grey3), baseColor3, 0.6);
+            baseColor4 = mix(vec3(grey4), baseColor4, 0.6);
+            baseColor5 = mix(vec3(grey5), baseColor5, 0.6);
+            baseColor6 = mix(vec3(grey6), baseColor6, 0.6);
           }
 
-          hsv1.x = fract(hsv1.x + hueShift);
-          hsv2.x = fract(hsv2.x + hueShift);
+          // Multi-color blending using all 6 colors (neo-brutalism style for all themes)
+          float mix1 = clamp(0.0 + waves * 0.3, 0.0, 1.0);
+          float mix2 = clamp(0.2 + wave1 * 0.4, 0.0, 1.0);
+          float mix3 = clamp(0.4 + wave2 * 0.3, 0.0, 1.0);
+          float mix4 = clamp(0.6 + wave3 * 0.2, 0.0, 1.0);
+          float mix5 = clamp(0.8 + wave4 * 0.1, 0.0, 1.0);
+          
+          vec3 c12 = mix(baseColor1, baseColor2, mix1);
+          vec3 c34 = mix(baseColor3, baseColor4, mix2);
+          vec3 c56 = mix(baseColor5, baseColor6, mix3);
+          vec3 c1234 = mix(c12, c34, mix4);
+          vec3 color = mix(c1234, c56, mix5);
 
-          vec3 rotatedColor1 = hsv2rgb(hsv1);
-          vec3 rotatedColor2 = hsv2rgb(hsv2);
+          // Apply vignette with gentle wave modulation, scaled by intensity
+          float alpha = vignette * intensity * (0.6 + 0.4 * waves);
 
-          // Mix between the rotating colors based on waves
-          vec3 color = mix(rotatedColor1, rotatedColor2, waves);
-
-          // Apply vignette with wave interference, scaled by intensity
-          // Use multiply blend approach for light mode (darker shadow)
-          float alpha = vignette * waves * intensity;
-
-          // Boost alpha for light mode visibility
+          // Boost alpha slightly for light mode visibility
           if (isDark < 0.5) {
-            alpha *= 1.5; // Stronger effect in light mode
+            alpha *= 1.6;
           }
 
           gl_FragColor = vec4(color, alpha);
         }
       `,
       transparent: true,
-      blending: THREE.AdditiveBlending,
-      side: THREE.DoubleSide
+      blending: blendingMode,
+      side: THREE.DoubleSide,
     });
 
     const vignetteMesh = new THREE.Mesh(vignetteGeometry, vignetteMaterial);
+    vignetteMesh.scale.set(width, height, 1);
     vignetteMesh.position.set(width / 2, height / 2, 0);
     scene.add(vignetteMesh);
+
+    materialRef.current = vignetteMaterial;
+    meshRef.current = vignetteMesh;
 
     // Animation
     const clock = new THREE.Clock();
@@ -185,19 +251,139 @@ export function Vignette({ intensity = 0.4 }: VignetteProps) {
     }
     animate();
 
+    // Resize handler
+    const handleResize = () => {
+      if (
+        !canvasRef.current ||
+        !rendererRef.current ||
+        !cameraRef.current ||
+        !materialRef.current ||
+        !meshRef.current
+      )
+        return;
+
+      const newWidth = window.innerWidth;
+      const newHeight = window.innerHeight;
+
+      // Update renderer
+      rendererRef.current.setSize(newWidth, newHeight);
+
+      // Update camera
+      const cam = cameraRef.current;
+      cam.right = newWidth;
+      cam.bottom = newHeight;
+      cam.updateProjectionMatrix();
+
+      // Update uniforms
+      materialRef.current.uniforms.resolution.value.set(newWidth, newHeight);
+
+      // Update mesh scale and position
+      const mesh = meshRef.current;
+      mesh.scale.set(newWidth, newHeight, 1);
+      mesh.position.set(newWidth / 2, newHeight / 2, 0);
+    };
+
+    window.addEventListener("resize", handleResize);
+
     // Cleanup
     return () => {
+      window.removeEventListener("resize", handleResize);
       cancelAnimationFrame(animationId);
       vignetteGeometry.dispose();
       vignetteMaterial.dispose();
       renderer.dispose();
+      materialRef.current = null;
+      rendererRef.current = null;
+      sceneRef.current = null;
+      cameraRef.current = null;
+      meshRef.current = null;
     };
-  }, [intensity]);
+  }, []); // Only create once on mount
+
+  // Update intensity and colors when props change
+  useEffect(() => {
+    if (
+      !materialRef.current ||
+      !rendererRef.current ||
+      !sceneRef.current ||
+      !cameraRef.current
+    ) {
+      return;
+    }
+
+    const material = materialRef.current;
+    const renderer = rendererRef.current;
+    const scene = sceneRef.current;
+    const camera = cameraRef.current;
+
+    // Calculate intensity from current props (not from closure)
+    const currentIntensity =
+      intensity !== undefined
+        ? intensity
+        : colorTheme === "neo-brutalism"
+        ? 1.0
+        : 0.5;
+
+    const updateUniforms = () => {
+      // Update intensity with current prop value
+      material.uniforms.intensity.value = currentIntensity;
+
+      // Update colors from CSS
+      const effectiveIsDark =
+        typeof isDark === "boolean"
+          ? isDark
+          : document.documentElement.classList.contains("dark");
+      const vignetteColor1 = getCSSColor("--vignette-color-1");
+      const vignetteColor2 = getCSSColor("--vignette-color-2");
+      const vignetteColor3 =
+        getCSSColor("--vignette-color-3") || vignetteColor2;
+      const vignetteColor4 =
+        getCSSColor("--vignette-color-4") || vignetteColor1;
+      const vignetteColor5 =
+        getCSSColor("--vignette-color-5") || vignetteColor2;
+      const vignetteColor6 =
+        getCSSColor("--vignette-color-6") || vignetteColor1;
+
+      material.uniforms.color1.value = vignetteColor1;
+      material.uniforms.color2.value = vignetteColor2;
+      material.uniforms.color3.value = vignetteColor3;
+      material.uniforms.color4.value = vignetteColor4;
+      material.uniforms.color5.value = vignetteColor5;
+      material.uniforms.color6.value = vignetteColor6;
+      material.uniforms.isDark.value = effectiveIsDark ? 1.0 : 0.0;
+
+      // Switch blending mode based on theme
+      // Light mode: NormalBlending for darker shadows/vignette
+      // Dark mode: AdditiveBlending for glowing effect
+      const newBlending = effectiveIsDark
+        ? THREE.AdditiveBlending
+        : THREE.NormalBlending;
+      if (material.blending !== newBlending) {
+        material.blending = newBlending;
+        material.needsUpdate = true;
+      }
+
+      // Force a render to apply changes immediately
+      renderer.render(scene, camera);
+    };
+
+    // Update immediately
+    updateUniforms();
+
+    // Rerun after next frame and after a short delay to catch CSS changes
+    const rafId = requestAnimationFrame(updateUniforms);
+    const timeoutId = setTimeout(updateUniforms, 100);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      clearTimeout(timeoutId);
+    };
+  }, [intensity, colorTheme, isDark]); // Depend on props directly, not calculated values
 
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none hidden md:block"
+      className="fixed inset-0 pointer-events-none block"
       style={{ zIndex: 1 }}
     />
   );
