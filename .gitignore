@@ -21,3 +21,6 @@ dist
 *.njsproj
 *.sln
 *.sw?
+
+bun.lock
+CNAME
