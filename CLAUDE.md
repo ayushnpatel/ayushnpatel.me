@@ -2,7 +2,7 @@
 
 ## Minimal Setup Philosophy
 
-Keep it simple. Start with vanilla HTML, add complexity only when needed.
+Keep it simple. Start with vanilla HTML + React + Tailwind.css, add complexity only when needed.
 
 ## Development Mode
 
