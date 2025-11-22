@@ -145,3 +145,27 @@ return new Response(stream, {
 ```
 
 Requires React 19+.
+
+## Claude Code Agent Skills
+
+This project includes specialized Agent Skills for monitoring and debugging the dev server:
+
+### Browser Console Monitor
+Monitors browser console logs streamed to terminal via `console: true`. Use this skill to:
+- Track browser-side errors and warnings in real-time
+- Debug frontend issues without opening browser DevTools
+- Monitor console.log output directly in terminal
+
+### Dev Server Monitor
+Monitors Bun dev server health and hot module reloading. Use this skill to:
+- Check if localhost:3000 is running
+- Verify HMR (hot module reloading) is working
+- Troubleshoot server configuration issues
+
+### Frontend Debugger
+Comprehensive React debugging with console streaming. Use this skill to:
+- Debug component lifecycle and state issues
+- Investigate render problems and infinite loops
+- Track props, events, and network requests
+
+Skills are located in `.claude/skills/` and automatically available to Claude Code.

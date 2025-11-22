@@ -2,14 +2,15 @@ import { Header } from './components/Header';
 import { Job } from './components/Job';
 import { Code, Briefcase, Rocket, Zap } from 'lucide-react';
 import { useTheme } from './hooks/useTheme';
-import { BorderEffect } from './components/BorderEffect';
+import { Vignette } from './components/Vignette';
+import { AnimatedYear } from './components/AnimatedYear';
 
 export function App() {
   const { isDark, toggleTheme } = useTheme();
 
   return (
     <div className="min-h-screen bg-background transition-colors duration-500 noise">
-      <BorderEffect />
+      <Vignette intensity={0.2} />
       <Header isDark={isDark} onThemeToggle={toggleTheme} />
 
       <main className="pt-32 pb-16 px-6">
@@ -19,7 +20,7 @@ export function App() {
             ayush patel
           </h1>
           <p className="text-lg md:text-xl text-text-muted max-w-2xl mx-auto text-pretty">
-            engineer in the big 2025 🚀<br /> reach out at <a href="mailto:ayushnpatel@gmail.com" className="underline font-bold text-text">ayushnpatel@gmail.com</a>
+            <AnimatedYear /> 🚀<br /> reach out at <a href="mailto:ayushnpatel@gmail.com" className="underline font-bold text-text">ayushnpatel@gmail.com</a>
           </p>
         </div>
 

@@ -80,7 +80,11 @@
   --color-hover: var(--color-neutral-100);
   --color-active: var(--color-neutral-200);
   --color-focus: var(--color-primary-500);
-  
+
+  /* Vignette Effect Colors */
+  --vignette-color-1: #004234;
+  --vignette-color-2: #c5fade;
+
   /* Shadows - Using modern layered approach */
   --shadow-xs: 0 1px 2px 0 oklch(0% 0 0 / 0.05);
   --shadow-sm: 0 1px 3px 0 oklch(0% 0 0 / 0.08), 
@@ -110,16 +114,16 @@
 @variant dark (&:where(.dark, .dark *));
 
 .dark {
-  /* Lighter charcoal gray backgrounds for improved readability */
-  --color-background: #3f3f3f;          /* Primary background - charcoal */
-  --color-surface: #4a4a4a;             /* Cards/elevated surfaces */
-  --color-surface-subtle: #4a4a4a;      /* Subtle surface variation */
-  --color-surface-accent: oklch(40% 0.015 145);  /* Keep accent tint */
+  /* Mid-dark emerald green backgrounds for sophisticated depth */
+  --color-background: #2f463d;          /* Primary background - emerald */
+  --color-surface: #3a5247;             /* Cards/elevated surfaces */
+  --color-surface-subtle: #3a5247;      /* Subtle surface variation */
+  --color-surface-accent: oklch(40% 0.035 160);  /* Emerald accent tint */
 
-  /* Defined border hierarchy */
-  --color-border: #5a5a5a;              /* Standard borders */
-  --color-border-subtle: #4f4f4f;       /* Subtle dividers */
-  --color-border-strong: #5a5a5a;       /* Emphasized borders */
+  /* Emerald-tinted border hierarchy */
+  --color-border: #526b5f;              /* Standard borders */
+  --color-border-subtle: #4a6357;       /* Subtle dividers */
+  --color-border-strong: #526b5f;       /* Emphasized borders */
 
   /* High contrast text for readability */
   --color-text: #f5f5f5;                /* Primary text - bright white */
@@ -127,21 +131,25 @@
   --color-text-subtle: #999999;         /* Less important info */
   --color-text-inverse: var(--color-neutral-950);
 
-  /* Brighter accent colors to pop against lighter background */
-  --color-accent: oklch(68% 0.100 145);      /* Brighter sage green */
-  --color-accent-emphasis: oklch(72% 0.110 145);
-  --color-accent-subtle: oklch(40% 0.030 145);
+  /* Brighter accent colors to pop against emerald background */
+  --color-accent: oklch(70% 0.110 160);      /* Brighter emerald accent */
+  --color-accent-emphasis: oklch(75% 0.120 160);
+  --color-accent-subtle: oklch(42% 0.035 160);
 
-  /* Brighter secondary colors */
-  --color-secondary: oklch(65% 0.090 45);    /* Brighter terracotta */
-  --color-secondary-emphasis: oklch(70% 0.100 45);
-  --color-secondary-subtle: oklch(38% 0.025 45);
+  /* Complementary warm accents */
+  --color-secondary: oklch(68% 0.095 45);    /* Warm terracotta */
+  --color-secondary-emphasis: oklch(72% 0.105 45);
+  --color-secondary-subtle: oklch(40% 0.028 45);
 
   /* Interactive states */
-  --color-hover: #545454;               /* Tertiary background for hover */
-  --color-active: #545454;              /* Active state */
+  --color-hover: #425a4f;               /* Tertiary emerald for hover */
+  --color-active: #425a4f;              /* Active state */
 
-  /* Adjusted shadows for lighter dark mode */
+  /* Vignette Effect Colors - brighter for dark mode */
+  --vignette-color-1: var(--color-primary-600);
+  --vignette-color-2: var(--color-secondary-600);
+
+  /* Adjusted shadows for emerald dark mode */
   --shadow-xs: 0 1px 2px 0 oklch(0% 0 0 / 0.2);
   --shadow-sm: 0 1px 3px 0 oklch(0% 0 0 / 0.25),
                0 1px 2px -1px oklch(0% 0 0 / 0.15);
@@ -194,17 +202,17 @@
     inset: 0;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
     pointer-events: none;
-    opacity: 0.6;
+    opacity: 0.42;
     mix-blend-mode: overlay;
   }
 
-  /* Enhanced grain for dark mode */
+  /* Enhanced grain for dark mode - increased for more texture */
   .dark .noise::before {
-    opacity: 0.15;
+    opacity: 0.455;
     mix-blend-mode: soft-light;
   }
 
-  /* Paper-like texture overlay */
+  /* Paper-like texture overlay - stronger grain */
   .dark .noise::after {
     content: "";
     position: absolute;
@@ -214,11 +222,11 @@
         0deg,
         transparent,
         transparent 2px,
-        oklch(0% 0 0 / 0.03) 2px,
-        oklch(0% 0 0 / 0.03) 4px
+        oklch(0% 0 0 / 0.065) 2px,
+        oklch(0% 0 0 / 0.065) 4px
       );
     pointer-events: none;
-    opacity: 0.4;
+    opacity: 0.78;
   }
 
   /* Typography utilities - Space Grotesk headers + Syne body */
@@ -256,5 +264,31 @@
 
   .font-medium {
     font-weight: 600;
+  }
+
+  /* Wobble animation for animated year */
+  @keyframes wobble {
+    0%, 100% {
+      transform: translateX(0) rotate(0deg);
+    }
+    15% {
+      transform: translateX(-2px) rotate(-1deg);
+    }
+    30% {
+      transform: translateX(2px) rotate(1deg);
+    }
+    45% {
+      transform: translateX(-2px) rotate(-0.5deg);
+    }
+    60% {
+      transform: translateX(2px) rotate(0.5deg);
+    }
+    75% {
+      transform: translateX(-1px) rotate(-0.25deg);
+    }
+  }
+
+  .wobble {
+    animation: wobble 3s ease-in-out infinite;
   }
 }
