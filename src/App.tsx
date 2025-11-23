@@ -86,10 +86,12 @@ export function App() {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         if (isFullscreen) {
-          // Exit fullscreen back to large image view
+          // Exit fullscreen
           setIsFullscreen(false);
+          setSelectedJob(null);
+          setSelectedImageIndex(null);
         } else if (selectedJob !== null) {
-          // Exit large image view back to normal
+          // Exit large image view back to normal (desktop)
           setSelectedJob(null);
           setSelectedImageIndex(null);
         }
@@ -100,13 +102,35 @@ export function App() {
   }, [selectedJob, isFullscreen]);
 
   const handleImageClick = (jobIndex: number, imageIndex: number) => {
-    if (selectedJob === jobIndex && selectedImageIndex === imageIndex) {
-      // Clicking the same image again closes it
-      setSelectedJob(null);
-      setSelectedImageIndex(null);
+    // Check if we're on mobile (screen width < 768px)
+    const isMobile = window.innerWidth < 768;
+
+    if (isMobile) {
+      // On mobile, go directly to fullscreen
+      if (
+        isFullscreen &&
+        selectedJob === jobIndex &&
+        selectedImageIndex === imageIndex
+      ) {
+        // Clicking the same image again closes fullscreen
+        setIsFullscreen(false);
+        setSelectedJob(null);
+        setSelectedImageIndex(null);
+      } else {
+        setSelectedJob(jobIndex);
+        setSelectedImageIndex(imageIndex);
+        setIsFullscreen(true);
+      }
     } else {
-      setSelectedJob(jobIndex);
-      setSelectedImageIndex(imageIndex);
+      // On desktop, use the expanded view first
+      if (selectedJob === jobIndex && selectedImageIndex === imageIndex) {
+        // Clicking the same image again closes it
+        setSelectedJob(null);
+        setSelectedImageIndex(null);
+      } else {
+        setSelectedJob(jobIndex);
+        setSelectedImageIndex(imageIndex);
+      }
     }
   };
 
@@ -120,10 +144,12 @@ export function App() {
 
   const handleMainClick = () => {
     if (isFullscreen) {
-      // Exit fullscreen back to large image view
+      // Exit fullscreen
       setIsFullscreen(false);
+      setSelectedJob(null);
+      setSelectedImageIndex(null);
     } else if (selectedJob !== null) {
-      // Exit large image view back to normal
+      // Exit large image view back to normal (desktop)
       setSelectedJob(null);
       setSelectedImageIndex(null);
     }
@@ -146,7 +172,7 @@ export function App() {
         onColorChange={setColorTheme}
       />
 
-      <main className="pt-24 sm:pt-32 pb-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <main className="pt-24 sm:pt-32 pb-10 px-8 sm:px-12 lg:px-12 max-w-7xl mx-auto">
         {/* Title Section */}
         <div className="text-center mb-12 sm:mb-16 md:mb-20">
           <h1 className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight text-text mb-4 text-balance">
@@ -161,22 +187,26 @@ export function App() {
         </div>
 
         {/* Jobs Section */}
-        <div className="space-y-16 md:space-y-24 relative z-50">
+        <div className="space-y-8 md:space-y-24 relative z-50">
           <AnimatePresence mode="popLayout">
-            {JOBS.map((job) => {
+            {JOBS.map((job, index) => {
               const isSelected = selectedJob === job.index;
               const isAbove = selectedJob !== null && job.index < selectedJob;
               const shouldShow = selectedJob === null || isSelected;
 
               return shouldShow ? (
-                <motion.div key={job.index}>
+                <motion.div key={job.index} className="relative">
+                  {/* Dotted divider - show between jobs */}
+                  {index > 0 && (
+                    <div className="absolute top-0 left-0 right-0 job-divider" />
+                  )}
                   <Job
                     image={job.image}
                     title={job.title}
                     date={job.date}
                     description={job.description}
                     imageCount={job.imageCount}
-                    showDivider={job.showDivider}
+                    showDivider={false}
                     jobIndex={job.index}
                     isExpanded={isSelected}
                     selectedImageIndex={isSelected ? selectedImageIndex : null}
@@ -281,7 +311,7 @@ export function App() {
           selectedJob !== null &&
           selectedImageIndex !== null && (
             <motion.div
-              className="fixed inset-0 bg-background/95 backdrop-blur-md z-100 hidden md:flex flex-col items-center justify-center gap-8 px-8"
+              className="fixed inset-0 bg-background/95 backdrop-blur-md z-100 flex flex-col items-center justify-center gap-4 md:gap-8 px-4 md:px-8"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -296,22 +326,17 @@ export function App() {
                   currentJob?.imageUrls.slice(0, currentJob.imageCount) || [];
                 return (
                   <div
-                    className="flex flex-col items-start gap-8 max-w-5xl w-full"
+                    className="flex flex-col items-center md:items-start gap-4 md:gap-8 max-w-5xl w-full"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    {/* Large Image - slightly smaller to accommodate carousel */}
+                    {/* Large Image - responsive sizing */}
                     <motion.div
-                      className="border-2 border-border-strong
-                               bg-secondary-subtle
-                               flex items-center justify-center
-                               shadow-2xl
-                               rounded-xs aspect-square overflow-hidden"
+                      className="border-2 border-border-strong bg-secondary-subtle flex items-center justify-center shadow-2xl rounded-xs aspect-square overflow-hidden w-[85vw] md:w-[min(70vw,70vh)]"
                       layoutId={`fullscreen-image-${selectedJob}-${selectedImageIndex}`}
                       initial={{ scale: 0.4, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
                       exit={{ scale: 0.4, opacity: 0 }}
                       transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-                      style={{ width: "min(70vw, 70vh)" }}
                     >
                       {imageUrl ? (
                         <img
@@ -320,7 +345,7 @@ export function App() {
                           className="w-full h-full object-cover"
                         />
                       ) : (
-                        <span className="text-6xl font-mono text-text font-bold">
+                        <span className="text-4xl md:text-6xl font-mono text-text font-bold">
                           16×16
                         </span>
                       )}
@@ -329,7 +354,7 @@ export function App() {
                     {/* Caption */}
                     {currentJob?.captions[selectedImageIndex] && (
                       <motion.div
-                        className="text-lg lg:text-xl text-text-muted text-left max-w-2xl"
+                        className="text-base md:text-lg lg:text-xl text-text-muted text-center md:text-left max-w-2xl px-4 md:px-0"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.2, duration: 0.3 }}
@@ -341,7 +366,7 @@ export function App() {
                     {/* Carousel for all images in fullscreen */}
                     {carouselImages.length > 0 && (
                       <motion.div
-                        className="w-full"
+                        className="w-full px-4 md:px-0"
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.3, duration: 0.4 }}
@@ -349,9 +374,9 @@ export function App() {
                         <ImageCarousel
                           images={carouselImages}
                           startIndex={0}
-                          onImageClick={(index) =>
-                            handleImageClick(selectedJob, index)
-                          }
+                          onImageClick={(index) => {
+                            setSelectedImageIndex(index);
+                          }}
                           selectedIndex={selectedImageIndex}
                           altPrefix={currentJob.title}
                           showAll={true}

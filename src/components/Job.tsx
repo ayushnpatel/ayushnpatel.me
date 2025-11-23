@@ -89,7 +89,10 @@ export function Job({
 
   return (
     <motion.div
-      className={cn("w-full max-w-5xl mx-auto mb-24", isExpanded && "mb-12")}
+      className={cn(
+        "relative w-full max-w-5xl mx-auto mb-8 md:mb-24",
+        isExpanded && "mb-6 md:mb-12"
+      )}
       variants={jobVariants}
       initial="initial"
       exit="exit"
@@ -97,10 +100,8 @@ export function Job({
       layout
       onClick={(e) => e.stopPropagation()}
     >
-      {/* Dotted divider - only visible on xs and sm, hidden on md+ */}
-      {showDivider && (
-        <div className="w-full max-w-5xl mx-auto job-divider md:hidden" />
-      )}
+      {/* Dotted divider - visible on all screen sizes */}
+      {showDivider && <div className="job-divider" />}
 
       {/* Mobile: Three-row layout */}
       <div className="md:hidden space-y-4">
@@ -159,7 +160,8 @@ export function Job({
                            shadow-sm hover:shadow-md
                            transition-all duration-200
                            hover:-translate-x-px hover:-translate-y-px
-                           w-[23%] aspect-square rounded-xs overflow-hidden"
+                           w-[23%] aspect-square rounded-xs overflow-hidden cursor-pointer"
+                onClick={() => handleImageClick(i)}
               >
                 {imageUrl ? (
                   <img

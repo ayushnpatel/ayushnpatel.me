@@ -410,16 +410,17 @@
   /* Job Divider - Proper dotted line */
   .job-divider {
     position: absolute;
-    top: -2rem; /* -32px, half of space-y-16 */
+    top: -1rem; /* -16px, half of space-y-8 (32px) */
     left: 0;
     right: 0;
-    height: 0;
+    height: 2px;
     pointer-events: none;
+    z-index: 10;
   }
 
   @media (min-width: 768px) {
     .job-divider {
-      top: -3rem; /* -48px, half of space-y-24 */
+      top: -3rem; /* -48px, half of space-y-24 (96px) */
     }
   }
 
