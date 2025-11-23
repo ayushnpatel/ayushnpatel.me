@@ -8,7 +8,7 @@ const server = serve({
 
   development: process.env.NODE_ENV !== "production" && {
     console: true,
-    hmr: true
+    hmr: true,
   },
 });
 

@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
 
 interface JobProps {
@@ -8,6 +9,15 @@ interface JobProps {
   description: string;
   imageCount?: number;
   showDivider?: boolean;
+  jobIndex: number;
+  isExpanded?: boolean;
+  selectedImageIndex?: number | null;
+  onImageClick?: (jobIndex: number, imageIndex: number) => void;
+  hoveredImage?: { jobIndex: number; imageIndex: number } | null;
+  onImageHover?: (jobIndex: number, imageIndex: number | null) => void;
+  isAbove?: boolean;
+  imageUrls?: string[];
+  captions?: string[];
 }
 
 export function Job({
@@ -18,11 +28,72 @@ export function Job({
   description,
   imageCount = 3,
   showDivider = false,
+  jobIndex,
+  isExpanded = false,
+  selectedImageIndex = null,
+  onImageClick,
+  hoveredImage,
+  onImageHover,
+  isAbove = false,
+  imageUrls = [],
+  captions = [],
 }: JobProps) {
   const clampedImageCount = Math.min(Math.max(imageCount, 1), 4);
 
+  const handleImageClick = (imageIndex: number) => {
+    if (onImageClick) {
+      onImageClick(jobIndex, imageIndex);
+    }
+  };
+
+  const handleImageHover = (imageIndex: number | null) => {
+    if (onImageHover) {
+      onImageHover(jobIndex, imageIndex);
+    }
+  };
+
+  // Animation variants for job container
+  const jobVariants = {
+    initial: { opacity: 1, y: 0 },
+    exit: (custom: { isAbove: boolean }) => ({
+      opacity: 0,
+      y: custom.isAbove ? -100 : 100,
+      transition: {
+        duration: 0.4,
+        ease: [0.4, 0, 0.2, 1] as any,
+      },
+    }),
+  };
+
+  // Job content stays visible - no animation needed
+
+  // Animation variants for images
+  const imageVariants = {
+    initial: {
+      scale: 1,
+      filter: "blur(1px)", // 5% blur
+      opacity: 1,
+    },
+    hovered: {
+      filter: "blur(0px)", // 0% blur when hovered
+      opacity: 1,
+    },
+    otherHovered: {
+      filter: "blur(0.5px)", // 5% blur
+      opacity: 0.8,
+    },
+  };
+
   return (
-    <div className="w-full max-w-5xl mx-auto relative">
+    <motion.div
+      className="w-full max-w-5xl mx-auto relative"
+      variants={jobVariants}
+      initial="initial"
+      exit="exit"
+      custom={{ isAbove }}
+      layout
+      onClick={(e) => e.stopPropagation()}
+    >
       {/* Dotted divider - only visible on xs and sm, hidden on md+ */}
       {showDivider && (
         <div className="w-full max-w-5xl mx-auto job-divider md:hidden" />
@@ -74,28 +145,39 @@ export function Job({
 
         {/* Row 2: Images evenly spaced - always square, 30% smaller */}
         <div className="flex items-center justify-between gap-4">
-          {Array.from({ length: clampedImageCount }).map((_, i) => (
-            <div
-              key={i}
-              className="border-2 border-border-strong
-                         bg-secondary-subtle
-                         flex items-center justify-center
-                         shadow-sm hover:shadow-md
-                         transition-all duration-200
-                         hover:-translate-x-px hover:-translate-y-px
-                         w-[23%] aspect-square rounded-xs"
-            >
-              <span className="text-[10px] font-mono text-text-subtle">
-                16×16
-              </span>
-            </div>
-          ))}
+          {Array.from({ length: clampedImageCount }).map((_, i) => {
+            const imageUrl = imageUrls[i] || "";
+            return (
+              <div
+                key={i}
+                className="border-2 border-border-strong
+                           bg-secondary-subtle
+                           flex items-center justify-center
+                           shadow-sm hover:shadow-md
+                           transition-all duration-200
+                           hover:-translate-x-px hover:-translate-y-px
+                           w-[23%] aspect-square rounded-xs overflow-hidden"
+              >
+                {imageUrl ? (
+                  <img
+                    src={imageUrl}
+                    alt={`${title} image ${i + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span className="text-[10px] font-mono text-text-subtle">
+                    16×16
+                  </span>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
 
-      {/* Desktop: Single-row layout */}
+      {/* Desktop: Single-row layout - maintains horizontal layout even when expanded */}
       <div className="hidden md:flex flex-row items-center justify-between gap-8 lg:gap-12">
-        {/* Icon and Text */}
+        {/* Icon and Text - stays visible always */}
         <div className="flex items-center gap-4 lg:gap-6 min-w-0 flex-1 text-left">
           <div
             className="shrink-0 rounded-full border-[3px] border-border-strong
@@ -131,24 +213,59 @@ export function Job({
           </div>
         </div>
 
-        {/* Images - always square */}
+        {/* Images - always show 3 small blurred images */}
         <div className="flex gap-3 shrink-0">
-          {Array.from({ length: clampedImageCount }).map((_, i) => (
-            <div
-              key={i}
-              className="border-2 border-border-strong
-                         bg-secondary-subtle
-                         flex items-center justify-center
-                         shadow-sm hover:shadow-md
-                         transition-all duration-200
-                         hover:-translate-x-px hover:-translate-y-px
-                         w-20 h-20 aspect-square rounded-xs"
-            >
-              <span className="text-xs font-mono text-text-subtle">16×16</span>
-            </div>
-          ))}
+          {Array.from({ length: clampedImageCount }).map((_, i) => {
+            const isHovered =
+              hoveredImage?.jobIndex === jobIndex &&
+              hoveredImage?.imageIndex === i;
+            const isOtherHovered =
+              hoveredImage?.jobIndex === jobIndex &&
+              hoveredImage?.imageIndex !== i &&
+              hoveredImage !== null;
+            const isSelected = isExpanded && selectedImageIndex === i;
+
+            const imageUrl = imageUrls[i] || "";
+            return (
+              <motion.div
+                key={i}
+                className="border-2 border-border-strong
+                           bg-secondary-subtle
+                           flex items-center justify-center
+                           shadow-sm hover:shadow-md
+                           hover:-translate-x-px hover:-translate-y-px
+                           w-20 h-20 aspect-square rounded-xs cursor-pointer overflow-hidden"
+                variants={imageVariants}
+                initial="initial"
+                animate={
+                  isHovered
+                    ? "hovered"
+                    : isOtherHovered
+                    ? "otherHovered"
+                    : "initial"
+                }
+                onClick={() => handleImageClick(i)}
+                onMouseEnter={() => handleImageHover(i)}
+                onMouseLeave={() => handleImageHover(null)}
+                transition={{ duration: 0.2 }}
+                layoutId={isSelected ? undefined : `image-${jobIndex}-${i}`}
+              >
+                {imageUrl ? (
+                  <img
+                    src={imageUrl}
+                    alt={`${title} image ${i + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span className="text-xs font-mono text-text-subtle">
+                    16×16
+                  </span>
+                )}
+              </motion.div>
+            );
+          })}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
