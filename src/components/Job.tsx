@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
 
@@ -18,6 +19,7 @@ interface JobProps {
   isAbove?: boolean;
   imageUrls?: string[];
   captions?: string[];
+  showCarousel?: boolean;
 }
 
 export function Job({
@@ -37,6 +39,7 @@ export function Job({
   isAbove = false,
   imageUrls = [],
   captions = [],
+  showCarousel = false,
 }: JobProps) {
   const clampedImageCount = Math.min(Math.max(imageCount, 1), 4);
 
@@ -71,7 +74,7 @@ export function Job({
   const imageVariants = {
     initial: {
       scale: 1,
-      filter: "blur(1px)", // 5% blur
+      filter: "blur(0.3px)", // 5% blur
       opacity: 1,
     },
     hovered: {
@@ -86,7 +89,7 @@ export function Job({
 
   return (
     <motion.div
-      className="w-full max-w-5xl mx-auto relative"
+      className={cn("w-full max-w-5xl mx-auto mb-24", isExpanded && "mb-12")}
       variants={jobVariants}
       initial="initial"
       exit="exit"
@@ -176,94 +179,96 @@ export function Job({
       </div>
 
       {/* Desktop: Single-row layout - maintains horizontal layout even when expanded */}
-      <div className="hidden md:flex flex-row items-center justify-between gap-8 lg:gap-12">
-        {/* Icon and Text - stays visible always */}
-        <div className="flex items-center gap-4 lg:gap-6 min-w-0 flex-1 text-left">
-          <div
-            className="shrink-0 rounded-full border-[3px] border-border-strong
+      <div className="hidden md:flex flex-col gap-4">
+        <div className="flex flex-row items-center justify-between gap-8 lg:gap-12">
+          {/* Icon and Text - stays visible always */}
+          <div className="flex items-center gap-4 lg:gap-6 min-w-0 flex-1 text-left">
+            <div
+              className="shrink-0 rounded-full border-[3px] border-border-strong
                        bg-surface-accent
                        flex items-center justify-center
                        shadow-md hover:shadow-lg
                        transition-all duration-300 hover:-translate-x-0.5 hover:-translate-y-0.5
                        w-20 h-20"
-          >
-            {image ? (
-              <img
-                src={image}
-                alt={title}
-                className="w-full h-full object-contain rounded-full"
-              />
-            ) : Icon ? (
-              <Icon className="text-accent w-10 h-10" strokeWidth={2.5} />
-            ) : null}
-          </div>
+            >
+              {image ? (
+                <img
+                  src={image}
+                  alt={title}
+                  className="w-full h-full object-contain rounded-full"
+                />
+              ) : Icon ? (
+                <Icon className="text-accent w-10 h-10" strokeWidth={2.5} />
+              ) : null}
+            </div>
 
-          <div className="flex flex-col justify-center min-w-0">
-            <h3 className="text-2xl lg:text-3xl font-bold text-text leading-tight text-pretty">
-              {title}
-            </h3>
-            {date && (
-              <p className="text-sm lg:text-base text-text-muted mt-1">
-                {date}
+            <div className="flex flex-col justify-center min-w-0">
+              <h3 className="text-2xl lg:text-3xl font-bold text-text leading-tight text-pretty">
+                {title}
+              </h3>
+              {date && (
+                <p className="text-sm lg:text-base text-text-muted mt-1">
+                  {date}
+                </p>
+              )}
+              <p className="text-base lg:text-lg text-text-muted text-pretty max-w-md mt-1">
+                {description}
               </p>
-            )}
-            <p className="text-base lg:text-lg text-text-muted text-pretty max-w-md mt-1">
-              {description}
-            </p>
+            </div>
           </div>
-        </div>
 
-        {/* Images - always show 3 small blurred images */}
-        <div className="flex gap-3 shrink-0">
-          {Array.from({ length: clampedImageCount }).map((_, i) => {
-            const isHovered =
-              hoveredImage?.jobIndex === jobIndex &&
-              hoveredImage?.imageIndex === i;
-            const isOtherHovered =
-              hoveredImage?.jobIndex === jobIndex &&
-              hoveredImage?.imageIndex !== i &&
-              hoveredImage !== null;
-            const isSelected = isExpanded && selectedImageIndex === i;
+          {/* Images - always show 3 small blurred images */}
+          <div className="flex gap-3 shrink-0">
+            {Array.from({ length: clampedImageCount }).map((_, i) => {
+              const isHovered =
+                hoveredImage?.jobIndex === jobIndex &&
+                hoveredImage?.imageIndex === i;
+              const isOtherHovered =
+                hoveredImage?.jobIndex === jobIndex &&
+                hoveredImage?.imageIndex !== i &&
+                hoveredImage !== null;
+              const isSelected = isExpanded && selectedImageIndex === i;
 
-            const imageUrl = imageUrls[i] || "";
-            return (
-              <motion.div
-                key={i}
-                className="border-2 border-border-strong
+              const imageUrl = imageUrls[i] || "";
+              return (
+                <motion.div
+                  key={i}
+                  className="border-2 border-border-strong
                            bg-secondary-subtle
                            flex items-center justify-center
                            shadow-sm hover:shadow-md
                            hover:-translate-x-px hover:-translate-y-px
                            w-20 h-20 aspect-square rounded-xs cursor-pointer overflow-hidden"
-                variants={imageVariants}
-                initial="initial"
-                animate={
-                  isHovered
-                    ? "hovered"
-                    : isOtherHovered
-                    ? "otherHovered"
-                    : "initial"
-                }
-                onClick={() => handleImageClick(i)}
-                onMouseEnter={() => handleImageHover(i)}
-                onMouseLeave={() => handleImageHover(null)}
-                transition={{ duration: 0.2 }}
-                layoutId={isSelected ? undefined : `image-${jobIndex}-${i}`}
-              >
-                {imageUrl ? (
-                  <img
-                    src={imageUrl}
-                    alt={`${title} image ${i + 1}`}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <span className="text-xs font-mono text-text-subtle">
-                    16×16
-                  </span>
-                )}
-              </motion.div>
-            );
-          })}
+                  variants={imageVariants}
+                  initial="initial"
+                  animate={
+                    isHovered
+                      ? "hovered"
+                      : isOtherHovered
+                      ? "otherHovered"
+                      : "initial"
+                  }
+                  onClick={() => handleImageClick(i)}
+                  onMouseEnter={() => handleImageHover(i)}
+                  onMouseLeave={() => handleImageHover(null)}
+                  transition={{ duration: 0.2 }}
+                  layoutId={isSelected ? undefined : `image-${jobIndex}-${i}`}
+                >
+                  {imageUrl ? (
+                    <img
+                      src={imageUrl}
+                      alt={`${title} image ${i + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-xs font-mono text-text-subtle">
+                      16×16
+                    </span>
+                  )}
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </motion.div>

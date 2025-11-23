@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 export function AnimatedYear() {
   const [year, setYear] = useState(2016);
   const [isAnimating, setIsAnimating] = useState(true);
-  const targetYear = 2025;
+  const targetYear = new Date().getFullYear();
 
   useEffect(() => {
     if (year >= targetYear) {
@@ -20,13 +20,20 @@ export function AnimatedYear() {
     }, stepDuration);
 
     return () => clearTimeout(timer);
-  }, [year]);
+  }, [year, targetYear]);
 
-  const preposition = year >= targetYear ? 'in' : 'since';
+  // When we reach the current year, show the rocket text instead
+  if (year >= targetYear) {
+    return (
+      <span className="inline-block mr-1">
+        🚀 engineer @ palantir 🚀
+      </span>
+    );
+  }
 
   return (
     <span className={!isAnimating ? 'inline-block mr-1' : 'mr-1'}>
-      engineer {preposition} <span className={`inline-block ml-1 ${!isAnimating ? 'wobble' : ''}`}>{year}</span>
+      engineer since <span className={`inline-block ml-1 ${!isAnimating ? 'wobble' : ''}`}>{year}</span>...
     </span>
   );
 }
