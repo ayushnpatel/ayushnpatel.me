@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Header } from "./components/Header";
 import { Job } from "./components/Job";
 import { useTheme } from "./hooks/useTheme";
+import { useMobile } from "./hooks/useMobile";
 import { Vignette } from "./components/Vignette";
 import { AnimatedYear } from "./components/AnimatedYear";
 import { Pagination } from "./components/Pagination";
@@ -71,6 +72,7 @@ const JOBS = [
 
 export function App() {
   const { isDark, toggleTheme, colorTheme, setColorTheme } = useTheme();
+  const isMobile = useMobile();
   const [selectedJob, setSelectedJob] = useState<number | null>(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
     null
@@ -80,6 +82,9 @@ export function App() {
     jobIndex: number;
     imageIndex: number;
   } | null>(null);
+
+  // Disable animations when fullscreen on mobile
+  const disableAnimations = isFullscreen && isMobile;
 
   // Handle escape key to close expanded state
   useEffect(() => {
@@ -102,9 +107,6 @@ export function App() {
   }, [selectedJob, isFullscreen]);
 
   const handleImageClick = (jobIndex: number, imageIndex: number) => {
-    // Check if we're on mobile (screen width < 768px)
-    const isMobile = window.innerWidth < 768;
-
     if (isMobile) {
       // On mobile, go directly to fullscreen
       if (
@@ -188,7 +190,7 @@ export function App() {
 
         {/* Jobs Section */}
         <div className="space-y-8 md:space-y-8 relative z-50">
-          <AnimatePresence mode="popLayout">
+          <AnimatePresence mode={disableAnimations ? undefined : "popLayout"}>
             {JOBS.map((job, index) => {
               const isSelected = selectedJob === job.index;
               const isAbove = selectedJob !== null && job.index < selectedJob;
@@ -203,9 +205,13 @@ export function App() {
                         <motion.div
                           key={`divider-${job.index}`}
                           className="absolute top-0 left-0 right-0 job-divider md:hidden"
-                          initial={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                          transition={{ duration: 0.15 }}
+                          {...(disableAnimations
+                            ? {}
+                            : {
+                                initial: { opacity: 1 },
+                                exit: { opacity: 0 },
+                                transition: { duration: 0.15 },
+                              })}
                         />
                       )}
                     </AnimatePresence>
@@ -227,6 +233,7 @@ export function App() {
                     imageUrls={job.imageUrls}
                     captions={job.captions}
                     showCarousel={job.showCarousel}
+                    disableAnimations={disableAnimations}
                   />
                   {/* Large Image Row - appears below selected job */}
                   {isSelected &&
@@ -235,10 +242,17 @@ export function App() {
                       <motion.div
                         key={`expanded-${job.index}`}
                         className="w-full max-w-5xl mx-auto hidden md:flex flex-col gap-3 mt-6"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 20 }}
-                        transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+                        {...(disableAnimations
+                          ? {}
+                          : {
+                              initial: { opacity: 0, y: 20 },
+                              animate: { opacity: 1, y: 0 },
+                              exit: { opacity: 0, y: 20 },
+                              transition: {
+                                duration: 0.5,
+                                ease: [0.4, 0, 0.2, 1],
+                              },
+                            })}
                         onClick={(e) => e.stopPropagation()}
                       >
                         {/* Large Image and Caption */}
@@ -250,14 +264,22 @@ export function App() {
                                      flex items-center justify-center
                                      shadow-lg
                                      w-[240px] h-[240px] aspect-square rounded-xs shrink-0 cursor-pointer overflow-hidden"
-                            layoutId={`large-image-${job.index}-${selectedImageIndex}`}
-                            initial={{ scale: 0.2, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            exit={{ scale: 0.2, opacity: 0 }}
-                            transition={{
-                              duration: 0.5,
-                              ease: [0.4, 0, 0.2, 1],
-                            }}
+                            layoutId={
+                              disableAnimations
+                                ? undefined
+                                : `large-image-${job.index}-${selectedImageIndex}`
+                            }
+                            {...(disableAnimations
+                              ? {}
+                              : {
+                                  initial: { scale: 0.2, opacity: 0 },
+                                  animate: { scale: 1, opacity: 1 },
+                                  exit: { scale: 0.2, opacity: 0 },
+                                  transition: {
+                                    duration: 0.5,
+                                    ease: [0.4, 0, 0.2, 1],
+                                  },
+                                })}
                             onClick={handleLargeImageClick}
                           >
                             {job.imageUrls[selectedImageIndex] ? (
@@ -282,9 +304,13 @@ export function App() {
                           <div className="flex-1 flex items-center justify-center">
                             <motion.div
                               className="text-base lg:text-lg text-text-muted text-center max-w-md"
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              transition={{ delay: 0.2, duration: 0.3 }}
+                              {...(disableAnimations
+                                ? {}
+                                : {
+                                    initial: { opacity: 0 },
+                                    animate: { opacity: 1 },
+                                    transition: { delay: 0.2, duration: 0.3 },
+                                  })}
                             >
                               {job.captions[selectedImageIndex]}
                             </motion.div>
@@ -294,9 +320,13 @@ export function App() {
                         {/* Carousel for additional images (4+) */}
                         {job.showCarousel && job.imageUrls.length > 3 && (
                           <motion.div
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.3, duration: 0.4 }}
+                            {...(disableAnimations
+                              ? {}
+                              : {
+                                  initial: { opacity: 0, y: 10 },
+                                  animate: { opacity: 1, y: 0 },
+                                  transition: { delay: 0.3, duration: 0.4 },
+                                })}
                           >
                             <ImageCarousel
                               images={job.imageUrls}

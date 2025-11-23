@@ -22,6 +22,7 @@ interface JobProps {
   imageUrls?: string[];
   captions?: string[];
   showCarousel?: boolean;
+  disableAnimations?: boolean;
 }
 
 export function Job({
@@ -42,6 +43,7 @@ export function Job({
   imageUrls = [],
   captions = [],
   showCarousel = false,
+  disableAnimations = false,
 }: JobProps) {
   const clampedImageCount = Math.min(Math.max(imageCount, 1), 4);
 
@@ -95,11 +97,13 @@ export function Job({
         "relative w-full max-w-5xl mx-auto mb-8 md:mb-24",
         isExpanded && "mb-6 md:mb-12"
       )}
-      variants={jobVariants}
-      initial="initial"
-      exit="exit"
-      custom={{ isAbove }}
-      layout
+      variants={disableAnimations ? undefined : jobVariants}
+      {...(disableAnimations ? {} : {
+        initial: "initial",
+        exit: "exit",
+        custom: { isAbove }
+      })}
+      layout={!disableAnimations}
       onClick={(e) => e.stopPropagation()}
     >
       {/* Dotted divider - visible on all screen sizes */}
@@ -252,20 +256,20 @@ export function Job({
                            shadow-sm hover:shadow-md
                            hover:-translate-x-px hover:-translate-y-px
                            w-16 h-16 md:w-20 md:h-20 aspect-square rounded-xs cursor-pointer overflow-hidden"
-                  variants={imageVariants}
-                  initial="initial"
-                  animate={
-                    isHovered
+                  variants={disableAnimations ? undefined : imageVariants}
+                  {...(disableAnimations ? {} : {
+                    initial: "initial",
+                    animate: isHovered
                       ? "hovered"
                       : isOtherHovered
                       ? "otherHovered"
-                      : "initial"
-                  }
+                      : "initial",
+                    transition: { duration: 0.2 }
+                  })}
                   onClick={() => handleImageClick(i)}
                   onMouseEnter={() => handleImageHover(i)}
                   onMouseLeave={() => handleImageHover(null)}
-                  transition={{ duration: 0.2 }}
-                  layoutId={isSelected ? undefined : `image-${jobIndex}-${i}`}
+                  layoutId={disableAnimations || isSelected ? undefined : `image-${jobIndex}-${i}`}
                 >
                   {imageUrl ? (
                     <OptimizedImage
