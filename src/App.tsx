@@ -21,7 +21,7 @@ const JOBS = [
     title: "fde @ palantir",
     date: "may 2025 - present",
     description:
-      "platform forward deployed engineer, multi-tenancy and governance features working with AI startups for financial service companies",
+      "forward deployed platform engineer, multi-tenancy and governance features working with AI startups for financial service companies",
     imageCount: 3,
     showDivider: false,
     index: 0,
@@ -161,7 +161,7 @@ export function App() {
 
   return (
     <div
-      className="min-h-screen bg-background transition-colors duration-500 noise"
+      className="min-h-screen md:h-screen md:overflow-hidden md:flex md:flex-col bg-background transition-colors duration-500 noise"
       onClick={handleMainClick}
     >
       <Vignette colorTheme={colorTheme} intensity={0.4} isDark={isDark} />
@@ -172,7 +172,7 @@ export function App() {
         onColorChange={setColorTheme}
       />
 
-      <main className="pt-24 sm:pt-32 pb-10 px-8 sm:px-12 lg:px-12 max-w-7xl mx-auto">
+      <main className="pt-24 sm:pt-32 pb-10 md:pb-0 md:flex-1 md:overflow-hidden px-8 sm:px-12 lg:px-12 max-w-7xl mx-auto">
         {/* Title Section */}
         <div className="text-center mb-12 sm:mb-16 md:mb-20">
           <h1 className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight text-text mb-4 text-balance">

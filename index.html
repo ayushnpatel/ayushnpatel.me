@@ -12,13 +12,35 @@
     />
     <link rel="stylesheet" href="./src/styles.css" />
     <script>
+      // Apply theme immediately to prevent flash
       const theme = localStorage.getItem("theme");
+      const colorTheme = localStorage.getItem("colorTheme");
+      const validColorThemes = [
+        "green",
+        "turquoise",
+        "amaretto",
+        "burgundy",
+        "boring",
+        "neo-brutalism",
+      ];
+
+      // Apply dark mode
       if (
         theme === "dark" ||
         (!theme && window.matchMedia("(prefers-color-scheme: dark)").matches)
       ) {
         document.documentElement.classList.add("dark");
       }
+
+      // Apply color theme
+      const selectedColorTheme =
+        colorTheme && validColorThemes.includes(colorTheme)
+          ? colorTheme
+          : "green";
+      document.documentElement.setAttribute(
+        "data-color-theme",
+        selectedColorTheme
+      );
     </script>
   </head>
   <body>

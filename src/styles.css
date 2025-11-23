@@ -61,9 +61,18 @@
   * {
     @apply border-border;
   }
+  html {
+    @apply overflow-x-hidden;
+  }
   body {
     @apply bg-background;
     color: var(--color-text);
+  }
+  @media (min-width: 768px) {
+    html,
+    body {
+      height: 100%;
+    }
   }
 }
 
@@ -815,16 +824,17 @@ div[class*="border-"]:active {
   box-shadow: 0px 0px 0px 0px #000000 !important;
 }
 
-[data-color-theme="neo-brutalism"] .font-display,
-[data-color-theme="neo-brutalism"] .font-heading {
+/* Font styling applied globally - not just for neo-brutalism */
+.font-display,
+.font-heading {
   font-weight: 900 !important;
   text-transform: uppercase !important;
   letter-spacing: -0.05em !important;
   font-family: "Lexend Mega", sans-serif !important;
 }
 
-[data-color-theme="neo-brutalism"] .font-sans,
-[data-color-theme="neo-brutalism"] .font-body {
+.font-sans,
+.font-body {
   font-family: "Lexend Mega", sans-serif !important;
 }
 
