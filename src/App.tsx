@@ -26,11 +26,7 @@ const JOBS = [
     showDivider: false,
     index: 0,
     showCarousel: true,
-    imageUrls: [
-      palantirJobImage,
-      palantirJobImage,
-      palantirJobImage,
-    ],
+    imageUrls: [palantirJobImage, palantirJobImage, palantirJobImage],
     captions: [
       "enjoyed my first time trying oxtail dumplings in santa monica during an onsite in nov 2025. best meal on the trip!",
       "enjoyed my first time trying oxtail dumplings in santa monica during an onsite in nov 2025. best meal on the trip!",
@@ -47,11 +43,7 @@ const JOBS = [
     showDivider: true,
     index: 1,
     showCarousel: false,
-    imageUrls: [
-      palantirJobImage,
-      palantirJobImage,
-      palantirJobImage,
-    ],
+    imageUrls: [palantirJobImage, palantirJobImage, palantirJobImage],
     captions: [
       "enjoyed my first time trying oxtail dumplings in santa monica during an onsite in nov 2025. best meal on the trip!",
       "enjoyed my first time trying oxtail dumplings in santa monica during an onsite in nov 2025. best meal on the trip!",
@@ -68,11 +60,7 @@ const JOBS = [
     showDivider: true,
     index: 2,
     showCarousel: false,
-    imageUrls: [
-      palantirJobImage,
-      palantirJobImage,
-      palantirJobImage,
-    ],
+    imageUrls: [palantirJobImage, palantirJobImage, palantirJobImage],
     captions: [
       "enjoyed my first time trying oxtail dumplings in santa monica during an onsite in nov 2025. best meal on the trip!",
       "enjoyed my first time trying oxtail dumplings in santa monica during an onsite in nov 2025. best meal on the trip!",
@@ -181,9 +169,8 @@ export function App() {
               const shouldShow = selectedJob === null || isSelected;
 
               return shouldShow ? (
-                <>
+                <motion.div key={job.index}>
                   <Job
-                    key={job.index}
                     image={job.image}
                     title={job.title}
                     date={job.date}
@@ -281,7 +268,7 @@ export function App() {
                         )}
                       </motion.div>
                     )}
-                </>
+                </motion.div>
               ) : null;
             })}
           </AnimatePresence>
@@ -305,7 +292,8 @@ export function App() {
                 const currentJob = JOBS[selectedJob];
                 const imageUrl = currentJob?.imageUrls[selectedImageIndex];
                 // Limit to first imageCount images for fullscreen carousel
-                const carouselImages = currentJob?.imageUrls.slice(0, currentJob.imageCount) || [];
+                const carouselImages =
+                  currentJob?.imageUrls.slice(0, currentJob.imageCount) || [];
                 return (
                   <div
                     className="flex flex-col items-start gap-8 max-w-5xl w-full"
