@@ -14,7 +14,7 @@ import pltrImage from "./assets/pltr.png";
 import capitalOneImage from "./assets/capital-one-icon.png";
 import snackpassImage from "./assets/snackpass.png";
 // Import the job image - will be optimized via OptimizedImage component
-import palantir1 from "./assets/job/palantir/oxtail-dumplings.jpg";
+import palantir1 from "./assets/job/palantir/oxtail-dumplings.avif";
 
 const JOBS = [
   {
@@ -358,7 +358,7 @@ export function App() {
           selectedJob !== null &&
           selectedImageIndex !== null && (
             <motion.div
-              className="fixed inset-0 bg-background/95 md:backdrop-blur-md z-100 flex flex-col items-center justify-center gap-4 md:gap-8 px-4 md:px-8"
+              className="fixed inset-0 bg-background/85 md:backdrop-blur-xs z-100 flex flex-col items-center justify-center gap-4 md:gap-8 px-4 md:px-8"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -383,28 +383,32 @@ export function App() {
                         style={{ aspectRatio: "1/1" }}
                       >
                         <motion.div
-                          className="absolute inset-0 border-2 border-border-strong bg-secondary-subtle flex items-center justify-center shadow-2xl rounded-xs overflow-hidden fullscreen-image-container"
+                          className="absolute inset-0 border-2 border-border-strong bg-secondary-subtle flex items-center justify-center shadow-2xl rounded-xs overflow-hidden transform-gpu"
                           layoutId={`fullscreen-image-${selectedJob}-${selectedImageIndex}`}
-                          initial={{ scale: 0.4, opacity: 0 }}
-                          animate={{ scale: 1, opacity: 1 }}
-                          exit={{ scale: 0.4, opacity: 0 }}
+                          initial={{ scale: 0.9, opacity: 0, y: 16 }}
+                          animate={{ scale: 1, opacity: 1, y: 0 }}
+                          exit={{ scale: 0.9, opacity: 0, y: 16 }}
                           transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
                         >
-                          {imageUrl ? (
-                            <OptimizedImage
-                              src={imageUrl}
-                              alt={`Fullscreen image ${selectedImageIndex + 1}`}
-                              className="w-full h-full object-cover"
-                              sizes="(max-width: 600px) 85vw, min(70vw, 70vh)"
-                              width={800}
-                              height={800}
-                              priority
-                            />
-                          ) : (
-                            <span className="text-4xl md:text-6xl font-mono text-text font-bold">
-                              16×16
-                            </span>
-                          )}
+                          <div className="w-full h-full">
+                            {imageUrl ? (
+                              <OptimizedImage
+                                src={imageUrl}
+                                alt={`Fullscreen image ${
+                                  selectedImageIndex + 1
+                                }`}
+                                className="w-full h-full object-cover"
+                                sizes="(max-width: 600px) 85vw, min(70vw, 70vh)"
+                                width={800}
+                                height={800}
+                                priority
+                              />
+                            ) : (
+                              <span className="text-4xl md:text-6xl font-mono text-text font-bold">
+                                16×16
+                              </span>
+                            )}
+                          </div>
                         </motion.div>
                       </div>
                     </div>

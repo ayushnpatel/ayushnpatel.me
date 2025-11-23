@@ -98,11 +98,13 @@ export function Job({
         isExpanded && "mb-6 md:mb-12"
       )}
       variants={disableAnimations ? undefined : jobVariants}
-      {...(disableAnimations ? {} : {
-        initial: "initial",
-        exit: "exit",
-        custom: { isAbove }
-      })}
+      {...(disableAnimations
+        ? {}
+        : {
+            initial: "initial",
+            exit: "exit",
+            custom: { isAbove },
+          })}
       layout={!disableAnimations}
       onClick={(e) => e.stopPropagation()}
     >
@@ -257,19 +259,25 @@ export function Job({
                            hover:-translate-x-px hover:-translate-y-px
                            w-16 h-16 md:w-20 md:h-20 aspect-square rounded-xs cursor-pointer overflow-hidden"
                   variants={disableAnimations ? undefined : imageVariants}
-                  {...(disableAnimations ? {} : {
-                    initial: "initial",
-                    animate: isHovered
-                      ? "hovered"
-                      : isOtherHovered
-                      ? "otherHovered"
-                      : "initial",
-                    transition: { duration: 0.2 }
-                  })}
+                  {...(disableAnimations
+                    ? {}
+                    : {
+                        initial: "initial",
+                        animate: isHovered
+                          ? "hovered"
+                          : isOtherHovered
+                          ? "otherHovered"
+                          : "initial",
+                        transition: { duration: 0.2 },
+                      })}
                   onClick={() => handleImageClick(i)}
                   onMouseEnter={() => handleImageHover(i)}
                   onMouseLeave={() => handleImageHover(null)}
-                  layoutId={disableAnimations || isSelected ? undefined : `image-${jobIndex}-${i}`}
+                  layoutId={
+                    disableAnimations || isSelected
+                      ? undefined
+                      : `image-${jobIndex}-${i}`
+                  }
                 >
                   {imageUrl ? (
                     <OptimizedImage
