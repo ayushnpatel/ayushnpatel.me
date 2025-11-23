@@ -37,20 +37,14 @@ export function OptimizedImage({
   className,
   ...props
 }: OptimizedImageProps) {
-  // Extract base path from src (remove query params, hash, and any vite-processed suffixes)
-  // If basePath is provided, use it; otherwise extract from src
+  // Extract base path from src (remove query params and hash).
+  // If basePath is provided, use it; otherwise extract from src.
   let baseUrl: string;
   if (basePath) {
     baseUrl = basePath;
   } else {
-    // Remove query params, hash, and any vite-processed paths
+    // Remove query params and hash so we keep the actual asset path that Vite outputs.
     baseUrl = src.split("?")[0].split("#")[0];
-    // If src is a vite-processed URL (contains /assets/), extract the original path
-    // This handles cases where vite has already processed the import
-    const assetsMatch = baseUrl.match(/\/assets\/(.+)$/);
-    if (assetsMatch) {
-      baseUrl = `./src/assets/${assetsMatch[1]}`;
-    }
   }
 
   const quality = 85;
