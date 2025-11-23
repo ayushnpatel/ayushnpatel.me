@@ -13,7 +13,7 @@ import pltrImage from "./assets/pltr.png";
 import capitalOneImage from "./assets/capital-one-icon.png";
 import snackpassImage from "./assets/snackpass.png";
 // Import the job image directly - Bun will handle this
-import palantirJobImage from "../public/job/palantir/IMG_8104.png";
+import palantirJobImage from "./assets/job/palantir/IMG_8104.png";
 
 const JOBS = [
   {
