@@ -8,11 +8,12 @@ import { AnimatedYear } from "./components/AnimatedYear";
 import { Pagination } from "./components/Pagination";
 import { ImageCarousel } from "./components/ImageCarousel";
 import { Socials } from "./components/Socials";
+import { OptimizedImage } from "./components/OptimizedImage";
 import pltrImage from "./assets/pltr.png";
 import capitalOneImage from "./assets/capital-one-icon.png";
 import snackpassImage from "./assets/snackpass.png";
-// Import the job image directly - Bun will handle this
-import palantirJobImage from "./assets/job/palantir/IMG_8104.png";
+// Import the job image - will be optimized via OptimizedImage component
+import palantir1 from "./assets/job/palantir/oxtail-dumplings.jpg";
 
 const JOBS = [
   {
@@ -25,7 +26,7 @@ const JOBS = [
     showDivider: false,
     index: 0,
     showCarousel: true,
-    imageUrls: [palantirJobImage, palantirJobImage, palantirJobImage],
+    imageUrls: [palantir1, palantir1, palantir1],
     captions: [
       "enjoyed my first time trying oxtail dumplings in santa monica during an onsite in nov 2025. best meal on the trip!",
       "enjoyed my first time trying oxtail dumplings in santa monica during an onsite in nov 2025. best meal on the trip!",
@@ -42,7 +43,7 @@ const JOBS = [
     showDivider: true,
     index: 1,
     showCarousel: false,
-    imageUrls: [palantirJobImage, palantirJobImage, palantirJobImage],
+    imageUrls: [palantir1, palantir1, palantir1],
     captions: [
       "enjoyed my first time trying oxtail dumplings in santa monica during an onsite in nov 2025. best meal on the trip!",
       "enjoyed my first time trying oxtail dumplings in santa monica during an onsite in nov 2025. best meal on the trip!",
@@ -59,7 +60,7 @@ const JOBS = [
     showDivider: true,
     index: 2,
     showCarousel: false,
-    imageUrls: [palantirJobImage, palantirJobImage, palantirJobImage],
+    imageUrls: [palantir1, palantir1, palantir1],
     captions: [
       "enjoyed my first time trying oxtail dumplings in santa monica during an onsite in nov 2025. best meal on the trip!",
       "enjoyed my first time trying oxtail dumplings in santa monica during an onsite in nov 2025. best meal on the trip!",
@@ -260,12 +261,15 @@ export function App() {
                             onClick={handleLargeImageClick}
                           >
                             {job.imageUrls[selectedImageIndex] ? (
-                              <img
+                              <OptimizedImage
                                 src={job.imageUrls[selectedImageIndex]}
                                 alt={`${job.title} image ${
                                   selectedImageIndex + 1
                                 }`}
                                 className="w-full h-full object-cover"
+                                sizes="240px"
+                                width={240}
+                                height={240}
                               />
                             ) : (
                               <span className="text-3xl font-mono text-text font-bold">
@@ -357,12 +361,14 @@ export function App() {
                           transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
                         >
                           {imageUrl ? (
-                            <img
+                            <OptimizedImage
                               src={imageUrl}
                               alt={`Fullscreen image ${selectedImageIndex + 1}`}
                               className="w-full h-full object-cover"
+                              sizes="(max-width: 600px) 85vw, min(70vw, 70vh)"
                               width={800}
                               height={800}
+                              priority
                             />
                           ) : (
                             <span className="text-4xl md:text-6xl font-mono text-text font-bold">

@@ -29,6 +29,8 @@
     "@types/react": "^19.2.6",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^4.3.4",
-    "vite": "^6.0.7"
+    "sharp": "^0.34.5",
+    "vite": "^6.0.7",
+    "vite-imagetools": "^9.0.0"
   }
 }

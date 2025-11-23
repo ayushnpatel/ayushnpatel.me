@@ -1,5 +1,31 @@
 # Bun Fullstack Best Practices
 
+## Image Usage
+
+**IMPORTANT: Always use `OptimizedImage` component when displaying images.**
+
+Never use raw `<img>` tags. Import `OptimizedImage` from `./components/OptimizedImage` and use it for all images. This ensures:
+
+- Responsive image variants (400, 800, 1200, 1600px widths)
+- Modern formats (AVIF, WebP, JPEG with fallback)
+- Optimized quality (85 - visually lossless)
+- Stripped metadata
+- Proper lazy loading and async decoding
+
+Example:
+
+```tsx
+import { OptimizedImage } from "./components/OptimizedImage";
+
+<OptimizedImage
+  src={imageUrl}
+  alt="Description"
+  sizes="(max-width: 400px) 400px, 800px"
+  width={800}
+  height={600}
+/>;
+```
+
 ## Minimal Setup Philosophy
 
 Keep it simple. Start with vanilla HTML + React + Tailwind.css, add complexity only when needed.
@@ -151,19 +177,25 @@ Requires React 19+.
 This project includes specialized Agent Skills for monitoring and debugging the dev server:
 
 ### Browser Console Monitor
+
 Monitors browser console logs streamed to terminal via `console: true`. Use this skill to:
+
 - Track browser-side errors and warnings in real-time
 - Debug frontend issues without opening browser DevTools
 - Monitor console.log output directly in terminal
 
 ### Dev Server Monitor
+
 Monitors Bun dev server health and hot module reloading. Use this skill to:
+
 - Check if localhost:3000 is running
 - Verify HMR (hot module reloading) is working
 - Troubleshoot server configuration issues
 
 ### Frontend Debugger
+
 Comprehensive React debugging with console streaming. Use this skill to:
+
 - Debug component lifecycle and state issues
 - Investigate render problems and infinite loops
 - Track props, events, and network requests

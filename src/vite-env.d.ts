@@ -1,4 +1,5 @@
 /// <reference types="vite/client" />
+/// <reference types="vite-imagetools/client" />
 
 declare module '*.png' {
   const src: string;

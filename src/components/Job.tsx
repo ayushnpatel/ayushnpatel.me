@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
+import { OptimizedImage } from "./OptimizedImage";
 
 interface JobProps {
   icon?: LucideIcon;
@@ -118,10 +119,13 @@ export function Job({
                        w-14 h-14"
           >
             {image ? (
-              <img
+              <OptimizedImage
                 src={image}
                 alt={typeof title === "string" ? title : "Job"}
                 className="w-full h-full object-contain rounded-full"
+                sizes="56px"
+                width={56}
+                height={56}
               />
             ) : Icon ? (
               <Icon className="text-accent w-7 h-7" strokeWidth={2.5} />
@@ -165,10 +169,13 @@ export function Job({
                 onClick={() => handleImageClick(i)}
               >
                 {imageUrl ? (
-                  <img
+                  <OptimizedImage
                     src={imageUrl}
                     alt={`${title} image ${i + 1}`}
                     className="w-full h-full object-cover"
+                    sizes="23vw"
+                    width={200}
+                    height={200}
                   />
                 ) : (
                   <span className="text-[10px] font-mono text-text-subtle">
@@ -195,10 +202,13 @@ export function Job({
                        w-12 h-12"
             >
               {image ? (
-                <img
+                <OptimizedImage
                   src={image}
                   alt={typeof title === "string" ? title : "Job"}
                   className="w-full h-full object-contain rounded-full"
+                  sizes="48px"
+                  width={48}
+                  height={48}
                 />
               ) : Icon ? (
                 <Icon className="text-accent w-6 h-6" strokeWidth={2.5} />
@@ -258,10 +268,14 @@ export function Job({
                   layoutId={isSelected ? undefined : `image-${jobIndex}-${i}`}
                 >
                   {imageUrl ? (
-                    <img
+                    <OptimizedImage
                       src={imageUrl}
+                      basePath={imageUrl}
                       alt={`${title} image ${i + 1}`}
                       className="w-full h-full object-cover"
+                      sizes="80px"
+                      width={80}
+                      height={80}
                     />
                   ) : (
                     <span className="text-xs font-mono text-text-subtle">

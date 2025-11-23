@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { OptimizedImage } from "./OptimizedImage";
 
 interface ImageCarouselProps {
   images: string[];
@@ -118,10 +119,13 @@ export function ImageCarousel({
                   opacity: showAll ? (isSelected ? 1 : 0.9) : undefined,
                 }}
               >
-                <img
+                <OptimizedImage
                   src={imageUrl}
                   alt={`${altPrefix} ${actualIndex + 1}`}
                   className="w-full h-full object-cover"
+                  sizes="64px"
+                  width={64}
+                  height={64}
                 />
               </motion.div>
             );
