@@ -1,11 +1,12 @@
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
+import type { ReactNode } from "react";
 
 interface JobProps {
   icon?: LucideIcon;
   image?: string;
-  title: string;
+  title: string | ReactNode;
   date?: string;
   description: string;
   imageCount?: number;
@@ -119,7 +120,7 @@ export function Job({
             {image ? (
               <img
                 src={image}
-                alt={title}
+                alt={typeof title === "string" ? title : "Job"}
                 className="w-full h-full object-contain rounded-full"
               />
             ) : Icon ? (
@@ -196,7 +197,7 @@ export function Job({
               {image ? (
                 <img
                   src={image}
-                  alt={title}
+                  alt={typeof title === "string" ? title : "Job"}
                   className="w-full h-full object-contain rounded-full"
                 />
               ) : Icon ? (

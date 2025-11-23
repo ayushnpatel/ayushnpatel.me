@@ -110,7 +110,11 @@ export function Header({
             currentTheme={colorTheme}
             onThemeChange={onColorChange}
           />
-          <ThemeButton isDark={isDark} onToggle={onThemeToggle} />
+          <ThemeButton
+            isDark={isDark}
+            onToggle={onThemeToggle}
+            colorTheme={colorTheme}
+          />
         </motion.div>
       </div>
     </motion.header>

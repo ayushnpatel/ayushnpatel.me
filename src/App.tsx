@@ -301,7 +301,11 @@ export function App() {
                                 handleImageClick(job.index, index)
                               }
                               selectedIndex={selectedImageIndex}
-                              altPrefix={job.title}
+                              altPrefix={
+                                typeof job.title === "string"
+                                  ? job.title
+                                  : "Job"
+                              }
                             />
                           </motion.div>
                         )}
@@ -335,7 +339,7 @@ export function App() {
                   currentJob?.imageUrls.slice(0, currentJob.imageCount) || [];
                 return (
                   <div
-                    className="flex flex-col items-center md:items-start gap-4 md:gap-8 max-w-5xl w-full"
+                    className="flex flex-col items-center gap-4 md:gap-8 max-w-5xl w-full"
                     onClick={(e) => e.stopPropagation()}
                   >
                     {/* Large Image - responsive sizing with fixed aspect ratio wrapper */}
@@ -372,7 +376,7 @@ export function App() {
                     {/* Caption */}
                     {currentJob?.captions[selectedImageIndex] && (
                       <motion.div
-                        className="text-base md:text-lg lg:text-xl text-text-muted text-center md:text-left max-w-2xl px-4 md:px-0"
+                        className="text-base md:text-lg lg:text-xl text-text-muted text-center max-w-2xl px-4 md:px-0"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.2, duration: 0.3 }}
@@ -384,7 +388,7 @@ export function App() {
                     {/* Carousel for all images in fullscreen */}
                     {carouselImages.length > 0 && (
                       <motion.div
-                        className="w-full px-4 md:px-0"
+                        className="w-full flex justify-center items-center px-4 md:px-0"
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.3, duration: 0.4 }}
@@ -396,8 +400,13 @@ export function App() {
                             setSelectedImageIndex(index);
                           }}
                           selectedIndex={selectedImageIndex}
-                          altPrefix={currentJob.title}
+                          altPrefix={
+                            typeof currentJob.title === "string"
+                              ? currentJob.title
+                              : "Job"
+                          }
                           showAll={true}
+                          centered={true}
                         />
                       </motion.div>
                     )}

@@ -9,6 +9,7 @@ interface ImageCarouselProps {
   selectedIndex?: number;
   altPrefix?: string;
   showAll?: boolean;
+  centered?: boolean;
 }
 
 export function ImageCarousel({
@@ -18,6 +19,7 @@ export function ImageCarousel({
   selectedIndex,
   altPrefix = "Image",
   showAll = false,
+  centered = false,
 }: ImageCarouselProps) {
   const [carouselOffset, setCarouselOffset] = useState(0);
   
@@ -65,7 +67,7 @@ export function ImageCarousel({
   };
 
   return (
-    <div className="w-full max-w-5xl flex items-center gap-3">
+    <div className={`${centered ? 'w-fit' : 'w-full'} max-w-5xl flex items-center gap-3`}>
       {/* Left Arrow - only show if user has scrolled */}
       {showLeftArrow && (
         <button

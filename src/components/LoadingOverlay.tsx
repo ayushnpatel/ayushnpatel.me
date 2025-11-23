@@ -50,7 +50,10 @@ export function LoadingOverlay({
                 ease: "linear",
               }}
             >
-              <Loader2 className="w-16 h-16 md:w-20 md:h-20 text-text" strokeWidth={2} />
+              <Loader2
+                className="w-16 h-16 md:w-20 md:h-20 text-text"
+                strokeWidth={2}
+              />
             </motion.div>
 
             {/* Optional message */}
@@ -70,4 +73,3 @@ export function LoadingOverlay({
     </AnimatePresence>
   );
 }
-

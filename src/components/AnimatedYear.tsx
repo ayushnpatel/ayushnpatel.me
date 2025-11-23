@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
+import frenchieImage from "../assets/frenchie.png";
 
 export function AnimatedYear() {
   const [year, setYear] = useState(2016);
@@ -16,24 +17,38 @@ export function AnimatedYear() {
     const stepDuration = duration / steps;
 
     const timer = setTimeout(() => {
-      setYear(prev => prev + 1);
+      setYear((prev) => prev + 1);
     }, stepDuration);
 
     return () => clearTimeout(timer);
   }, [year, targetYear]);
 
-  // When we reach the current year, show the rocket text instead
+  // When we reach the current year, show the palantir text instead
   if (year >= targetYear) {
     return (
-      <span className="inline-block mr-1">
-        🚀 engineer @ palantir 🚀
+      <span className="inline-flex items-center gap-1.5 mr-1">
+        <img
+          src={frenchieImage}
+          alt="Palantir"
+          className="w-8 h-8 inline-block object-contain"
+        />
+        <span>engineer in nyc</span>
+        <img
+          src={frenchieImage}
+          alt="Palantir"
+          className="w-8 h-8 inline-block object-contain"
+        />
       </span>
     );
   }
 
   return (
-    <span className={!isAnimating ? 'inline-block mr-1' : 'mr-1'}>
-      engineer since <span className={`inline-block ml-1 ${!isAnimating ? 'wobble' : ''}`}>{year}</span>...
+    <span className={!isAnimating ? "inline-block mr-1" : "mr-1"}>
+      engineer since{" "}
+      <span className={`inline-block ml-1 ${!isAnimating ? "wobble" : ""}`}>
+        {year}
+      </span>
+      ...
     </span>
   );
 }
