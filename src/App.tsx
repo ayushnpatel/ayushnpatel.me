@@ -10,6 +10,7 @@ import { Pagination } from "./components/Pagination";
 import { ImageCarousel } from "./components/ImageCarousel";
 import { Socials } from "./components/Socials";
 import { OptimizedImage } from "./components/OptimizedImage";
+import { cn } from "./lib/utils";
 import pltrImage from "./assets/pltr.png";
 import capitalOneImage from "./assets/capital-one-icon.png";
 import snackpassImage from "./assets/snackpass.png";
@@ -174,7 +175,7 @@ export function App() {
         onColorChange={setColorTheme}
       />
 
-      <main className="pt-24 sm:pt-16 pb-10 md:pb-0 md:flex-1 md:overflow-hidden px-8 sm:px-12 lg:px-8 max-w-7xl mx-auto">
+      <main className="pt-24 sm:pt-16 pb-10 md:pb-0 md:flex-1 md:overflow-hidden px-8 sm:px-12 lg:px-8 max-w-7xl mx-auto md:flex md:flex-col">
         {/* Title Section */}
         <div className="text-center mb-12 sm:mb-16 md:mb-8">
           <h1 className="text-5xl sm:text-7xl md:text-5xl font-black tracking-tight text-text mb-4 text-balance">
@@ -189,7 +190,12 @@ export function App() {
         </div>
 
         {/* Jobs Section */}
-        <div className="space-y-8 md:space-y-8 relative z-50">
+        <div
+          className={cn(
+            "space-y-8 md:space-y-8 relative z-50 md:flex-1 md:flex md:flex-col md:items-center",
+            selectedJob === null ? "md:justify-center" : "md:justify-start mt-8"
+          )}
+        >
           <AnimatePresence mode={disableAnimations ? undefined : "popLayout"}>
             {JOBS.map((job, index) => {
               const isSelected = selectedJob === job.index;
