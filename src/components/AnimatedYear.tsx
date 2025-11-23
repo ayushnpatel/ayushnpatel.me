@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import frenchieImage from "../assets/frenchie.png";
+import { cn } from "@/lib/utils";
 
 export function AnimatedYear() {
   const [year, setYear] = useState(2016);
@@ -12,7 +13,7 @@ export function AnimatedYear() {
       return;
     }
 
-    const duration = 2000;
+    const duration = 4000;
     const steps = targetYear - 2016;
     const stepDuration = duration / steps;
 
@@ -24,31 +25,41 @@ export function AnimatedYear() {
   }, [year, targetYear]);
 
   // When we reach the current year, show the palantir text instead
-  if (year >= targetYear) {
-    return (
-      <span className="inline-flex items-center gap-1.5 mr-1">
-        <img
-          src={frenchieImage}
-          alt="Palantir"
-          className="w-8 h-8 inline-block object-contain"
-        />
-        <span>engineer in nyc</span>
-        <img
-          src={frenchieImage}
-          alt="Palantir"
-          className="w-8 h-8 inline-block object-contain"
-        />
-      </span>
-    );
-  }
-
-  return (
-    <span className={!isAnimating ? "inline-block mr-1" : "mr-1"}>
-      engineer since{" "}
-      <span className={`inline-block ml-1 ${!isAnimating ? "wobble" : ""}`}>
+  return year >= targetYear ? (
+    <span className="inline-block items-center gap-1.5 mr-1">
+      <img
+        src={frenchieImage}
+        alt="Palantir"
+        className="w-8 h-8 inline-block object-contain"
+      />
+      <span className="px-2">engineer in nyc</span>
+      <img
+        src={frenchieImage}
+        alt="Palantir"
+        className="w-8 h-8 inline-block object-contain"
+      />
+    </span>
+  ) : (
+    <div
+      className={cn("min-h-8 h-8", !isAnimating ? "inline-block mr-1" : "mr-1")}
+    >
+      <img
+        src={frenchieImage}
+        alt="Palantir"
+        className="w-8 h-8 inline-block object-contain"
+      />
+      <span className="pl-2">engineering since </span>
+      <span
+        className={`inline-block ml-1 mr-2   ${!isAnimating ? "wobble" : ""}`}
+      >
         {year}
       </span>
-      ...
-    </span>
+      <span className="mr-2">...</span>
+      <img
+        src={frenchieImage}
+        alt="Palantir"
+        className="w-8 h-8 inline-block object-contain"
+      />
+    </div>
   );
 }
