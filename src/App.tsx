@@ -196,9 +196,19 @@ export function App() {
 
               return shouldShow ? (
                 <motion.div key={job.index} className="relative">
-                  {/* Dotted divider - show between jobs */}
+                  {/* Dotted divider - show between jobs on mobile only, hide immediately when any job is selected */}
                   {index > 0 && (
-                    <div className="absolute top-0 left-0 right-0 job-divider" />
+                    <AnimatePresence>
+                      {selectedJob === null && (
+                        <motion.div
+                          key={`divider-${job.index}`}
+                          className="absolute top-0 left-0 right-0 job-divider md:hidden"
+                          initial={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.15 }}
+                        />
+                      )}
+                    </AnimatePresence>
                   )}
                   <Job
                     image={job.image}
@@ -311,7 +321,7 @@ export function App() {
           selectedJob !== null &&
           selectedImageIndex !== null && (
             <motion.div
-              className="fixed inset-0 bg-background/95 backdrop-blur-md z-100 flex flex-col items-center justify-center gap-4 md:gap-8 px-4 md:px-8"
+              className="fixed inset-0 bg-background/95 md:backdrop-blur-md z-100 flex flex-col items-center justify-center gap-4 md:gap-8 px-4 md:px-8"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -329,27 +339,36 @@ export function App() {
                     className="flex flex-col items-center md:items-start gap-4 md:gap-8 max-w-5xl w-full"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    {/* Large Image - responsive sizing */}
-                    <motion.div
-                      className="border-2 border-border-strong bg-secondary-subtle flex items-center justify-center shadow-2xl rounded-xs aspect-square overflow-hidden w-[85vw] md:w-[min(70vw,70vh)]"
-                      layoutId={`fullscreen-image-${selectedJob}-${selectedImageIndex}`}
-                      initial={{ scale: 0.4, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      exit={{ scale: 0.4, opacity: 0 }}
-                      transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-                    >
-                      {imageUrl ? (
-                        <img
-                          src={imageUrl}
-                          alt={`Fullscreen image ${selectedImageIndex + 1}`}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <span className="text-4xl md:text-6xl font-mono text-text font-bold">
-                          16×16
-                        </span>
-                      )}
-                    </motion.div>
+                    {/* Large Image - responsive sizing with fixed aspect ratio wrapper */}
+                    <div className="w-full flex justify-center">
+                      <div
+                        className="relative w-[85vw] max-w-[600px] md:w-[min(70vw,70vh)]"
+                        style={{ aspectRatio: "1/1" }}
+                      >
+                        <motion.div
+                          className="absolute inset-0 border-2 border-border-strong bg-secondary-subtle flex items-center justify-center shadow-2xl rounded-xs overflow-hidden fullscreen-image-container"
+                          layoutId={`fullscreen-image-${selectedJob}-${selectedImageIndex}`}
+                          initial={{ scale: 0.4, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          exit={{ scale: 0.4, opacity: 0 }}
+                          transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+                        >
+                          {imageUrl ? (
+                            <img
+                              src={imageUrl}
+                              alt={`Fullscreen image ${selectedImageIndex + 1}`}
+                              className="w-full h-full object-cover"
+                              width={800}
+                              height={800}
+                            />
+                          ) : (
+                            <span className="text-4xl md:text-6xl font-mono text-text font-bold">
+                              16×16
+                            </span>
+                          )}
+                        </motion.div>
+                      </div>
+                    </div>
 
                     {/* Caption */}
                     {currentJob?.captions[selectedImageIndex] && (

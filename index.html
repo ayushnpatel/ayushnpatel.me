@@ -4,6 +4,118 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ayush Patel</title>
+    <script>
+      (function () {
+        try {
+          const root = document.documentElement;
+          const storedTheme = localStorage.getItem("theme");
+          const storedColorTheme = localStorage.getItem("colorTheme");
+          const validColorThemes = [
+            "green",
+            "turquoise",
+            "amaretto",
+            "burgundy",
+            "boring",
+            "neo-brutalism",
+          ];
+
+          const prefersDark = window.matchMedia
+            ? window.matchMedia("(prefers-color-scheme: dark)").matches
+            : false;
+          const isDark =
+            storedTheme === "dark" ||
+            (!storedTheme && prefersDark && storedTheme !== "light");
+          const colorTheme = validColorThemes.includes(storedColorTheme ?? "")
+            ? storedColorTheme
+            : "green";
+
+          root.classList.toggle("dark", !!isDark);
+          root.setAttribute("data-color-theme", colorTheme);
+          root.setAttribute("data-theme-ready", "true");
+        } catch (error) {
+          console.warn("Unable to apply initial theme", error);
+        }
+      })();
+    </script>
+    <style>
+      :root {
+        --initial-background: color-mix(
+          in oklch,
+          oklch(58% 0.12 145) 10%,
+          white
+        );
+        --initial-text: #0f1917;
+      }
+
+      :root.dark {
+        --initial-background: #2f463d;
+        --initial-text: #f5f5f5;
+      }
+
+      html,
+      body {
+        background-color: var(--initial-background);
+        color: var(--initial-text);
+        min-height: 100%;
+      }
+
+      #root {
+        min-height: 100vh;
+        background-color: inherit;
+      }
+
+      :root[data-color-theme="turquoise"] {
+        --initial-background: color-mix(
+          in oklch,
+          oklch(58% 0.14 200) 10%,
+          white
+        );
+      }
+
+      :root[data-color-theme="amaretto"] {
+        --initial-background: color-mix(
+          in oklch,
+          oklch(58% 0.14 55) 10%,
+          white
+        );
+      }
+
+      :root[data-color-theme="burgundy"] {
+        --initial-background: color-mix(
+          in oklch,
+          oklch(58% 0.14 15) 10%,
+          white
+        );
+      }
+
+      :root[data-color-theme="boring"] {
+        --initial-background: color-mix(in oklch, oklch(50% 0 0) 10%, white);
+      }
+
+      :root[data-color-theme="neo-brutalism"] {
+        --initial-background: #f0e5ff;
+      }
+
+      :root[data-color-theme="turquoise"].dark {
+        --initial-background: #1a3a42;
+      }
+
+      :root[data-color-theme="amaretto"].dark {
+        --initial-background: #3a281a;
+      }
+
+      :root[data-color-theme="burgundy"].dark {
+        --initial-background: #3a1a1a;
+      }
+
+      :root[data-color-theme="boring"].dark {
+        --initial-background: #1a1a1a;
+      }
+
+      :root[data-color-theme="neo-brutalism"].dark {
+        --initial-background: #0a0a0a;
+      }
+    </style>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -11,37 +123,6 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./src/styles.css" />
-    <script>
-      // Apply theme immediately to prevent flash
-      const theme = localStorage.getItem("theme");
-      const colorTheme = localStorage.getItem("colorTheme");
-      const validColorThemes = [
-        "green",
-        "turquoise",
-        "amaretto",
-        "burgundy",
-        "boring",
-        "neo-brutalism",
-      ];
-
-      // Apply dark mode
-      if (
-        theme === "dark" ||
-        (!theme && window.matchMedia("(prefers-color-scheme: dark)").matches)
-      ) {
-        document.documentElement.classList.add("dark");
-      }
-
-      // Apply color theme
-      const selectedColorTheme =
-        colorTheme && validColorThemes.includes(colorTheme)
-          ? colorTheme
-          : "green";
-      document.documentElement.setAttribute(
-        "data-color-theme",
-        selectedColorTheme
-      );
-    </script>
   </head>
   <body>
     <div id="root"></div>

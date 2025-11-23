@@ -448,6 +448,23 @@
       transparent 8px
     );
   }
+
+  /* Fullscreen Image Container - GPU compositing & mobile optimization */
+  .fullscreen-image-container {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    will-change: opacity;
+  }
+
+  /* Disable CSS transforms on fullscreen images on mobile */
+  @media (pointer: coarse) {
+    .fullscreen-image-container {
+      transform: none !important;
+      box-shadow: none !important;
+    }
+  }
 }
 
 /* Color Theme Definitions */
