@@ -53,7 +53,7 @@ const JOBS = [
   {
     image: snackpassImage,
     title: "intern @ snackpass",
-    date: "spring 2023 - summer 2023",
+    date: "apr 2023 - aug 2023",
     description:
       "worked on 4 stacks — kiosk apps, ios + android app, web app, backend. lasting features amongst all of them — including current promotion system",
     imageCount: 3,
