@@ -1,21 +1,34 @@
+import type { ColorTheme } from "@/hooks/useTheme";
+import { ColorThemeList } from "./ColorPicker";
+import { cn } from "@/lib/utils";
 import { Moon, Sun } from "lucide-react";
 
 interface ThemeButtonProps {
   isDark: boolean;
   onToggle: () => void;
+  colorTheme: ColorTheme;
 }
 
-export function ThemeButton({ isDark, onToggle }: ThemeButtonProps) {
+export function ThemeButton({
+  isDark,
+  onToggle,
+  colorTheme,
+}: ThemeButtonProps) {
   return (
     <button
       onClick={onToggle}
-      className="w-10 h-10 rounded-full border-2 border-border-strong
-                 bg-surface hover:bg-hover active:bg-active
-                 flex items-center justify-center
-                 transition-all duration-300 ease-in-out
-                 hover:scale-110 hover:rotate-12
-                 active:scale-95
-                 shadow-sm hover:shadow-md"
+      className={cn(
+        "w-10 h-10 rounded-full border-2 border-border-strong",
+        "flex items-center justify-center",
+        "transition-all duration-300 ease-in-out",
+        "hover:scale-110 hover:rotate-12",
+        "active:scale-95",
+        "shadow-sm hover:shadow-md"
+      )}
+      style={{
+        backgroundColor:
+          ColorThemeList.find((t) => t.value === colorTheme)?.color + " / 100%",
+      }}
       aria-label="Toggle theme"
     >
       <div className="relative w-6 h-6">

@@ -47,6 +47,15 @@ export function Vignette({ intensity, colorTheme, isDark }: VignetteProps) {
   const sceneRef = useRef<THREE.Scene | null>(null);
   const cameraRef = useRef<THREE.OrthographicCamera | null>(null);
   const meshRef = useRef<THREE.Mesh | null>(null);
+  const animationIdRef = useRef<number | null>(null);
+  const clockRef = useRef<THREE.Clock | null>(null);
+
+  // Mouse tracking and physics state
+  const mouseRef = useRef<THREE.Vector2>(new THREE.Vector2(0, 0)); // Normalized -1 to 1
+  const targetOffsetRef = useRef<THREE.Vector2>(new THREE.Vector2(0, 0)); // Target vignette offset
+  const currentOffsetRef = useRef<THREE.Vector2>(new THREE.Vector2(0, 0)); // Current vignette offset
+  const velocityRef = useRef<THREE.Vector2>(new THREE.Vector2(0, 0)); // Velocity for inertia
+  const isDesktopRef = useRef<boolean>(false); // Track if desktop device
 
   useEffect(() => {
     if (!canvasRef.current) return;
@@ -70,8 +79,9 @@ export function Vignette({ intensity, colorTheme, isDark }: VignetteProps) {
       canvas,
       alpha: true,
       antialias: true,
+      preserveDrawingBuffer: true,
     });
-    renderer.setSize(width, height);
+    renderer.setSize(width, height, false);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setClearColor(0x000000, 0);
     rendererRef.current = renderer;
@@ -98,6 +108,7 @@ export function Vignette({ intensity, colorTheme, isDark }: VignetteProps) {
       uniforms: {
         time: { value: 0 },
         resolution: { value: new THREE.Vector2(width, height) },
+        centerOffset: { value: new THREE.Vector2(0, 0) }, // For cursor tracking
         color1: { value: vignetteColor1 },
         color2: { value: vignetteColor2 },
         color3: { value: vignetteColor3 },
@@ -124,6 +135,7 @@ export function Vignette({ intensity, colorTheme, isDark }: VignetteProps) {
       fragmentShader: `
         uniform float time;
         uniform vec2 resolution;
+        uniform vec2 centerOffset;
         uniform vec3 color1;
         uniform vec3 color2;
         uniform vec3 color3;
@@ -153,7 +165,8 @@ export function Vignette({ intensity, colorTheme, isDark }: VignetteProps) {
 
         void main() {
           vec2 uv = vUv;
-          vec2 center = vec2(0.5, 0.5);
+          // Apply cursor-based offset to vignette center
+          vec2 center = vec2(0.5, 0.5) + centerOffset;
 
           // Distance from center (vignette)
           float dist = length(uv - center);
@@ -241,15 +254,78 @@ export function Vignette({ intensity, colorTheme, isDark }: VignetteProps) {
 
     // Animation
     const clock = new THREE.Clock();
-    let animationId: number;
+    clockRef.current = clock;
+    let isRunning = true;
 
     function animate() {
-      animationId = requestAnimationFrame(animate);
-      const time = clock.getElapsedTime();
-      vignetteMaterial.uniforms.time.value = time;
-      renderer.render(scene, camera);
+      if (!isRunning) return;
+
+      animationIdRef.current = requestAnimationFrame(animate);
+
+      if (
+        rendererRef.current &&
+        sceneRef.current &&
+        cameraRef.current &&
+        materialRef.current
+      ) {
+        const time = clock.getElapsedTime();
+        materialRef.current.uniforms.time.value = time;
+
+        // Apply inertia-based physics for cursor tracking (desktop only)
+        if (isDesktopRef.current) {
+          // Physics parameters
+          const stiffness = 0.035; // How quickly it accelerates toward target
+          const damping = 0.88; // Velocity decay factor (creates drift/inertia)
+
+          // Calculate delta between target and current position
+          const deltaX = targetOffsetRef.current.x - currentOffsetRef.current.x;
+          const deltaY = targetOffsetRef.current.y - currentOffsetRef.current.y;
+
+          // Apply spring force to velocity (acceleration toward target)
+          velocityRef.current.x += deltaX * stiffness;
+          velocityRef.current.y += deltaY * stiffness;
+
+          // Apply damping/friction to velocity (creates inertia drift)
+          velocityRef.current.multiplyScalar(damping);
+
+          // Update current offset with velocity
+          currentOffsetRef.current.x += velocityRef.current.x;
+          currentOffsetRef.current.y += velocityRef.current.y;
+
+          // Update shader uniform
+          materialRef.current.uniforms.centerOffset.value.set(
+            currentOffsetRef.current.x,
+            currentOffsetRef.current.y
+          );
+        }
+
+        rendererRef.current.render(sceneRef.current, cameraRef.current);
+      }
     }
     animate();
+
+    // Detect if desktop (no touch support)
+    isDesktopRef.current = !("ontouchstart" in window);
+
+    // Mouse tracking for cursor-based vignette movement (desktop only)
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isDesktopRef.current) return;
+
+      // Convert mouse position to normalized coordinates (-1 to 1)
+      const x = (e.clientX / window.innerWidth) * 2 - 1;
+      const y = -((e.clientY / window.innerHeight) * 2 - 1); // Invert Y
+
+      mouseRef.current.set(x, y);
+
+      // Calculate target offset (clamped to subtle movement: 10-15% at edges)
+      // Using 0.075 means at screen edge (±1), offset is ±0.075 (7.5% of UV space)
+      const maxOffset = 0.075;
+      targetOffsetRef.current.set(x * maxOffset, y * maxOffset);
+    };
+
+    if (isDesktopRef.current) {
+      window.addEventListener("mousemove", handleMouseMove);
+    }
 
     // Resize handler
     const handleResize = () => {
@@ -265,13 +341,16 @@ export function Vignette({ intensity, colorTheme, isDark }: VignetteProps) {
       const newWidth = window.innerWidth;
       const newHeight = window.innerHeight;
 
-      // Update renderer
-      rendererRef.current.setSize(newWidth, newHeight);
+      // Update renderer - use false to prevent CSS style updates
+      rendererRef.current.setSize(newWidth, newHeight, false);
+      rendererRef.current.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
       // Update camera
       const cam = cameraRef.current;
+      cam.left = 0;
       cam.right = newWidth;
-      cam.bottom = newHeight;
+      cam.top = newHeight;
+      cam.bottom = 0;
       cam.updateProjectionMatrix();
 
       // Update uniforms
@@ -283,12 +362,27 @@ export function Vignette({ intensity, colorTheme, isDark }: VignetteProps) {
       mesh.position.set(newWidth / 2, newHeight / 2, 0);
     };
 
-    window.addEventListener("resize", handleResize);
+    // Use both resize and a slight delay to catch all resize events
+    let resizeTimeout: NodeJS.Timeout;
+    const debouncedResize = () => {
+      handleResize();
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(handleResize, 100);
+    };
+
+    window.addEventListener("resize", debouncedResize);
 
     // Cleanup
     return () => {
-      window.removeEventListener("resize", handleResize);
-      cancelAnimationFrame(animationId);
+      isRunning = false;
+      window.removeEventListener("resize", debouncedResize);
+      if (isDesktopRef.current) {
+        window.removeEventListener("mousemove", handleMouseMove);
+      }
+      clearTimeout(resizeTimeout);
+      if (animationIdRef.current !== null) {
+        cancelAnimationFrame(animationIdRef.current);
+      }
       vignetteGeometry.dispose();
       vignetteMaterial.dispose();
       renderer.dispose();
@@ -297,6 +391,8 @@ export function Vignette({ intensity, colorTheme, isDark }: VignetteProps) {
       sceneRef.current = null;
       cameraRef.current = null;
       meshRef.current = null;
+      clockRef.current = null;
+      animationIdRef.current = null;
     };
   }, []); // Only create once on mount
 
@@ -383,8 +479,14 @@ export function Vignette({ intensity, colorTheme, isDark }: VignetteProps) {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none block"
-      style={{ zIndex: 1 }}
+      className="fixed inset-0 pointer-events-none"
+      style={{
+        zIndex: 1,
+        display: "block",
+        position: "fixed",
+        top: 0,
+        left: 0,
+      }}
     />
   );
 }

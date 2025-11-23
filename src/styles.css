@@ -465,6 +465,75 @@
       box-shadow: none !important;
     }
   }
+
+  /* Loading Overlay Animations */
+  .loading-overlay {
+    backdrop-filter: blur(8px);
+    background: oklch(from var(--color-background) l c h / 0.85);
+  }
+
+  .loading-wave-container {
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .loading-wave {
+    position: absolute;
+    left: -100%;
+    width: 200%;
+    height: 100%;
+    opacity: 0.15;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--vignette-color-1) 25%,
+      var(--vignette-color-2) 40%,
+      var(--vignette-color-3) 50%,
+      var(--vignette-color-4) 60%,
+      var(--vignette-color-5) 75%,
+      transparent
+    );
+  }
+
+  .loading-wave-1 {
+    animation: wave-slide 3s ease-in-out infinite;
+  }
+
+  .loading-wave-2 {
+    animation: wave-slide 3s ease-in-out infinite 1s;
+    opacity: 0.1;
+  }
+
+  .loading-wave-3 {
+    animation: wave-slide 3s ease-in-out infinite 2s;
+    opacity: 0.08;
+  }
+
+  @keyframes wave-slide {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(50%);
+    }
+  }
+
+  /* Dark mode adjustments for loading overlay */
+  .dark .loading-overlay {
+    background: oklch(from var(--color-background) l c h / 0.9);
+  }
+
+  .dark .loading-wave {
+    opacity: 0.25;
+  }
+
+  .dark .loading-wave-2 {
+    opacity: 0.18;
+  }
+
+  .dark .loading-wave-3 {
+    opacity: 0.12;
+  }
 }
 
 /* Color Theme Definitions */

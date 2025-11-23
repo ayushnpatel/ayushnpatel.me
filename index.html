@@ -115,6 +115,150 @@
       :root[data-color-theme="neo-brutalism"].dark {
         --initial-background: #0a0a0a;
       }
+
+      /* Initial loading overlay styles */
+      .initial-loading-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: oklch(from var(--initial-background) l c h / 0.9);
+        backdrop-filter: blur(8px);
+        transition: opacity 0.4s ease, visibility 0.4s ease;
+      }
+
+      .initial-loading-overlay.hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+
+      .initial-loading-wave-container {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+      }
+
+      .initial-loading-wave {
+        position: absolute;
+        left: -100%;
+        width: 200%;
+        height: 100%;
+        opacity: 0.15;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          oklch(58% 0.12 145) 25%,
+          oklch(68% 0.095 45) 40%,
+          oklch(58% 0.1 145) 50%,
+          oklch(52% 0.105 145) 60%,
+          oklch(62% 0.095 45) 75%,
+          transparent
+        );
+        animation: initial-wave-slide 3s ease-in-out infinite;
+      }
+
+      .initial-loading-wave-2 {
+        animation-delay: 1s;
+        opacity: 0.1;
+      }
+
+      .initial-loading-wave-3 {
+        animation-delay: 2s;
+        opacity: 0.08;
+      }
+
+      @keyframes initial-wave-slide {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(50%);
+        }
+      }
+
+      .initial-loading-content {
+        position: relative;
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+      }
+
+      .initial-loading-spinner {
+        width: 4rem;
+        height: 4rem;
+        color: var(--initial-text);
+        animation: initial-spin 2s linear infinite;
+      }
+
+      @media (min-width: 768px) {
+        .initial-loading-spinner {
+          width: 5rem;
+          height: 5rem;
+        }
+      }
+
+      .initial-loading-circle {
+        stroke-dasharray: 50;
+        stroke-dashoffset: 0;
+        transform-origin: center;
+        animation: initial-dash 1.5s ease-in-out infinite;
+      }
+
+      @keyframes initial-spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes initial-dash {
+        0% {
+          stroke-dashoffset: 50;
+        }
+        50% {
+          stroke-dashoffset: 12.5;
+        }
+        100% {
+          stroke-dashoffset: 50;
+        }
+      }
+
+      .initial-loading-text {
+        font-size: 1rem;
+        color: oklch(from var(--initial-text) l c h / 0.7);
+        font-family: "Syne", system-ui, sans-serif;
+      }
+
+      @media (min-width: 768px) {
+        .initial-loading-text {
+          font-size: 1.125rem;
+        }
+      }
+
+      /* Dark mode adjustments */
+      :root.dark .initial-loading-overlay {
+        background: oklch(from var(--initial-background) l c h / 0.95);
+      }
+
+      :root.dark .initial-loading-wave {
+        opacity: 0.25;
+      }
+
+      :root.dark .initial-loading-wave-2 {
+        opacity: 0.18;
+      }
+
+      :root.dark .initial-loading-wave-3 {
+        opacity: 0.12;
+      }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -125,6 +269,33 @@
     <link rel="stylesheet" href="./src/styles.css" />
   </head>
   <body>
+    <!-- Loading overlay - shown before React mounts -->
+    <div id="initial-loading-overlay" class="initial-loading-overlay">
+      <div class="initial-loading-wave-container">
+        <div class="initial-loading-wave initial-loading-wave-1"></div>
+        <div class="initial-loading-wave initial-loading-wave-2"></div>
+        <div class="initial-loading-wave initial-loading-wave-3"></div>
+      </div>
+      <div class="initial-loading-content">
+        <svg
+          class="initial-loading-spinner"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            class="initial-loading-circle"
+            cx="12"
+            cy="12"
+            r="10"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+        </svg>
+        <p class="initial-loading-text">Loading...</p>
+      </div>
+    </div>
     <div id="root"></div>
     <script type="module" src="./src/main.tsx"></script>
   </body>

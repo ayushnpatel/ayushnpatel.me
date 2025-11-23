@@ -17,7 +17,7 @@ export function useTheme() {
   });
 
   const [colorTheme, setColorTheme] = useState<ColorTheme>(() => {
-    if (typeof window === "undefined") return "green";
+    if (typeof window === "undefined") return "neo-brutalism";
     const saved = localStorage.getItem("colorTheme");
     const theme =
       saved &&
@@ -30,7 +30,7 @@ export function useTheme() {
         "neo-brutalism",
       ].includes(saved)
         ? (saved as ColorTheme)
-        : "green";
+        : "neo-brutalism";
     // Set attribute immediately to avoid flash
     document.documentElement.setAttribute("data-color-theme", theme);
     return theme;

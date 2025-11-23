@@ -6,7 +6,7 @@ import {
 } from "./ui/dropdown-menu";
 import type { ColorTheme } from "../hooks/useTheme";
 
-const colorThemes: {
+export const ColorThemeList: {
   value: ColorTheme;
   label: string;
   color: string;
@@ -32,7 +32,7 @@ interface ColorPickerProps {
 
 export function ColorPicker({ currentTheme, onThemeChange }: ColorPickerProps) {
   const currentThemeData =
-    colorThemes.find((t) => t.value === currentTheme) || colorThemes[0];
+    ColorThemeList.find((t) => t.value === currentTheme) || ColorThemeList[0];
   const currentColor = currentThemeData.color;
   const isMultiColor =
     currentThemeData.colors && currentThemeData.colors.length > 1;
@@ -68,7 +68,7 @@ export function ColorPicker({ currentTheme, onThemeChange }: ColorPickerProps) {
         align="end"
         className="min-w-[180px] p-2 gap-1 bg-surface border-border-strong"
       >
-        {colorThemes.map((theme) => (
+        {ColorThemeList.map((theme) => (
           <DropdownMenuItem
             key={theme.value}
             onClick={() => onThemeChange(theme.value)}

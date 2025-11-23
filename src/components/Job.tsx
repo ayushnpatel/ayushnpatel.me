@@ -182,16 +182,16 @@ export function Job({
 
       {/* Desktop: Single-row layout - maintains horizontal layout even when expanded */}
       <div className="hidden md:flex flex-col gap-4">
-        <div className="flex flex-row items-center justify-between gap-8 lg:gap-12">
+        <div className="flex flex-row items-center justify-between gap-3 lg:gap-4">
           {/* Icon and Text - stays visible always */}
-          <div className="flex items-center gap-4 lg:gap-6 min-w-0 flex-1 text-left">
+          <div className="flex items-center gap-2.5 lg:gap-3 min-w-0 flex-1 text-left">
             <div
               className="shrink-0 rounded-full border-[3px] border-border-strong
                        bg-surface-accent
                        flex items-center justify-center
                        shadow-md hover:shadow-lg
                        transition-all duration-300 hover:-translate-x-0.5 hover:-translate-y-0.5
-                       w-20 h-20"
+                       w-12 h-12"
             >
               {image ? (
                 <img
@@ -200,27 +200,27 @@ export function Job({
                   className="w-full h-full object-contain rounded-full"
                 />
               ) : Icon ? (
-                <Icon className="text-accent w-10 h-10" strokeWidth={2.5} />
+                <Icon className="text-accent w-6 h-6" strokeWidth={2.5} />
               ) : null}
             </div>
 
             <div className="flex flex-col justify-center min-w-0">
-              <h3 className="text-2xl lg:text-3xl font-bold text-text leading-tight text-pretty">
+              <h3 className="text-lg lg:text-xl font-bold text-text leading-tight text-pretty">
                 {title}
               </h3>
               {date && (
-                <p className="text-sm lg:text-base text-text-muted mt-1">
+                <p className="text-xs lg:text-xs text-text-muted mt-0.5">
                   {date}
                 </p>
               )}
-              <p className="text-base lg:text-lg text-text-muted text-pretty max-w-md mt-1">
+              <p className="text-xs lg:text-sm text-text-muted text-pretty max-w-md mt-0.5">
                 {description}
               </p>
             </div>
           </div>
 
           {/* Images - always show 3 small blurred images */}
-          <div className="flex gap-3 shrink-0">
+          <div className="flex gap-8 shrink-0">
             {Array.from({ length: clampedImageCount }).map((_, i) => {
               const isHovered =
                 hoveredImage?.jobIndex === jobIndex &&
@@ -240,7 +240,7 @@ export function Job({
                            flex items-center justify-center
                            shadow-sm hover:shadow-md
                            hover:-translate-x-px hover:-translate-y-px
-                           w-20 h-20 aspect-square rounded-xs cursor-pointer overflow-hidden"
+                           w-16 h-16 md:w-20 md:h-20 aspect-square rounded-xs cursor-pointer overflow-hidden"
                   variants={imageVariants}
                   initial="initial"
                   animate={

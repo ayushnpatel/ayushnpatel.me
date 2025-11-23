@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Header } from "./components/Header";
 import { Job } from "./components/Job";
-import { Code, Briefcase, Rocket, Zap } from "lucide-react";
 import { useTheme } from "./hooks/useTheme";
 import { Vignette } from "./components/Vignette";
 import { AnimatedYear } from "./components/AnimatedYear";
@@ -161,7 +160,7 @@ export function App() {
 
   return (
     <div
-      className="min-h-screen md:h-screen md:overflow-hidden md:flex md:flex-col bg-background transition-colors duration-500 noise"
+      className="min-h-screen md:h-screen md:overflow-hidden md:flex md:flex-col bg-background transition-colors duration-150 noise"
       onClick={handleMainClick}
     >
       <Vignette colorTheme={colorTheme} intensity={0.4} isDark={isDark} />
@@ -172,13 +171,13 @@ export function App() {
         onColorChange={setColorTheme}
       />
 
-      <main className="pt-24 sm:pt-32 pb-10 md:pb-0 md:flex-1 md:overflow-hidden px-8 sm:px-12 lg:px-12 max-w-7xl mx-auto">
+      <main className="pt-24 sm:pt-16 pb-10 md:pb-0 md:flex-1 md:overflow-hidden px-8 sm:px-12 lg:px-8 max-w-7xl mx-auto">
         {/* Title Section */}
-        <div className="text-center mb-12 sm:mb-16 md:mb-20">
-          <h1 className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight text-text mb-4 text-balance">
+        <div className="text-center mb-12 sm:mb-16 md:mb-8">
+          <h1 className="text-5xl sm:text-7xl md:text-5xl font-black tracking-tight text-text mb-4 text-balance">
             ayush patel
           </h1>
-          <p className="text-base sm:text-lg md:text-xl text-text-muted max-w-2xl mx-auto text-pretty">
+          <p className="text-base sm:text-lg md:text-base text-text-muted max-w-2xl mx-auto text-pretty">
             <AnimatedYear />
           </p>
           <div className="mt-4">
@@ -187,7 +186,7 @@ export function App() {
         </div>
 
         {/* Jobs Section */}
-        <div className="space-y-8 md:space-y-24 relative z-50">
+        <div className="space-y-8 md:space-y-8 relative z-50">
           <AnimatePresence mode="popLayout">
             {JOBS.map((job, index) => {
               const isSelected = selectedJob === job.index;
@@ -234,7 +233,7 @@ export function App() {
                     !isFullscreen && (
                       <motion.div
                         key={`expanded-${job.index}`}
-                        className="w-full max-w-5xl mx-auto hidden md:flex flex-col gap-8 mt-8"
+                        className="w-full max-w-5xl mx-auto hidden md:flex flex-col gap-3 mt-6"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 20 }}
@@ -242,14 +241,14 @@ export function App() {
                         onClick={(e) => e.stopPropagation()}
                       >
                         {/* Large Image and Caption */}
-                        <div className="flex items-center gap-8 lg:gap-12">
+                        <div className="flex items-center gap-3 lg:gap-4">
                           {/* Large Image */}
                           <motion.div
                             className="border-2 border-border-strong
                                      bg-secondary-subtle
                                      flex items-center justify-center
                                      shadow-lg
-                                     w-[400px] h-[400px] aspect-square rounded-xs shrink-0 cursor-pointer overflow-hidden"
+                                     w-[240px] h-[240px] aspect-square rounded-xs shrink-0 cursor-pointer overflow-hidden"
                             layoutId={`large-image-${job.index}-${selectedImageIndex}`}
                             initial={{ scale: 0.2, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
