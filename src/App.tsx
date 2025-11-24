@@ -23,7 +23,7 @@ const JOBS = [
     title: "fde @ palantir",
     date: "may 2025 - present",
     description:
-      "forward deployed platform engineer, multi-tenancy and governance features working with AI startups for financial service companies",
+      "forward deployed engineer, platform work including multi-tenancy and governance solutions working with AI startups for financial service companies",
     imageCount: 3,
     showDivider: false,
     index: 0,
@@ -192,7 +192,7 @@ export function App() {
         {/* Jobs Section */}
         <div
           className={cn(
-            "space-y-8 md:space-y-8 relative z-50 md:flex-1 md:flex md:flex-col md:items-center",
+            "space-y-8 md:space-y-0 relative z-50 md:flex-1 md:flex md:flex-col md:items-center",
             selectedJob === null ? "md:justify-center" : "md:justify-start mt-8"
           )}
         >
