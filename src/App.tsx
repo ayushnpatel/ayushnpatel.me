@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValue,
+  useTransform,
+} from "framer-motion";
 import { Header } from "./components/Header";
 import { Job } from "./components/Job";
 import { useTheme } from "./hooks/useTheme";
@@ -10,6 +15,7 @@ import { Pagination } from "./components/Pagination";
 import { ImageCarousel } from "./components/ImageCarousel";
 import { Socials } from "./components/Socials";
 import { OptimizedImage } from "./components/OptimizedImage";
+import { ThemedHeading } from "./components/ThemedHeading";
 import { cn } from "./lib/utils";
 import pltrImage from "./assets/pltr.png";
 import capitalOneImage from "./assets/capital-one-icon.png";
@@ -86,6 +92,16 @@ export function App() {
 
   // Disable animations when fullscreen on mobile
   const disableAnimations = isFullscreen && isMobile;
+
+  // Noir Glass Parallax
+  const isNoirGlass = colorTheme === "noir-glass";
+  const mouseX = useMotionValue(0.5);
+  const mouseY = useMotionValue(0.5);
+  const translateX = useTransform(mouseX, [0, 1], [-8, 8]);
+  const translateY = useTransform(mouseY, [0, 1], [-8, 8]);
+
+  // Dawn Fade Background
+  const isDawnFade = colorTheme === "dawn-fade";
 
   // Handle escape key to close expanded state
   useEffect(() => {
@@ -166,8 +182,122 @@ export function App() {
     <div
       className="min-h-screen md:h-screen md:overflow-hidden md:flex md:flex-col bg-background transition-colors duration-150 noise"
       onClick={handleMainClick}
+      onMouseMove={
+        !isNoirGlass
+          ? undefined
+          : (e) => {
+              const { innerWidth, innerHeight } = window;
+              mouseX.set(e.clientX / innerWidth);
+              mouseY.set(e.clientY / innerHeight);
+            }
+      }
     >
-      <Vignette colorTheme={colorTheme} intensity={0.4} isDark={isDark} />
+      {/* SVG Filters for Liquid Glass Effect */}
+      <svg style={{ display: "none" }} aria-hidden="true">
+        <defs>
+          {/* Main glass distortion filter */}
+          <filter
+            id="liquid-glass-distortion"
+            x="-50%"
+            y="-50%"
+            width="200%"
+            height="200%"
+          >
+            <feTurbulence
+              type="turbulence"
+              baseFrequency="0.015"
+              numOctaves="3"
+              result="noise"
+              seed="1"
+            />
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="noise"
+              scale="8"
+              xChannelSelector="R"
+              yChannelSelector="G"
+            />
+          </filter>
+
+          {/* Subtle glass distortion for icons */}
+          <filter
+            id="liquid-glass-subtle"
+            x="-20%"
+            y="-20%"
+            width="140%"
+            height="140%"
+          >
+            <feTurbulence
+              type="turbulence"
+              baseFrequency="0.02"
+              numOctaves="2"
+              result="noise"
+              seed="2"
+            />
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="noise"
+              scale="4"
+              xChannelSelector="R"
+              yChannelSelector="G"
+            />
+          </filter>
+
+          {/* Specular highlight gradient */}
+          <linearGradient
+            id="liquid-glass-highlight"
+            x1="0%"
+            y1="0%"
+            x2="100%"
+            y2="100%"
+          >
+            <stop offset="0%" stopColor="rgba(255,255,255,0.4)" />
+            <stop offset="50%" stopColor="rgba(255,255,255,0.1)" />
+            <stop offset="100%" stopColor="rgba(255,255,255,0.2)" />
+          </linearGradient>
+
+          {/* Radial highlight for buttons */}
+          <radialGradient id="liquid-glass-radial" cx="30%" cy="30%" r="70%">
+            <stop offset="0%" stopColor="rgba(255,255,255,0.5)" />
+            <stop offset="100%" stopColor="rgba(255,255,255,0)" />
+          </radialGradient>
+        </defs>
+      </svg>
+      {/* Dawn Fade Background Overlay */}
+      <AnimatePresence>
+        {isDawnFade && (
+          <motion.div
+            aria-hidden
+            className="fixed inset-0 -z-10 pointer-events-none"
+            initial={{ opacity: 0 }}
+            animate={{
+              opacity: 1,
+              backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+            }}
+            exit={{ opacity: 0 }}
+            transition={{
+              opacity: { duration: 0.5 },
+              backgroundPosition: {
+                duration: 40,
+                repeat: Infinity,
+                ease: "linear",
+              },
+            }}
+            style={{
+              background:
+                "linear-gradient(135deg, #ffe4c4 0%, #fed7aa 25%, #bfdbfe 75%, #e0f2fe 100%)",
+              backgroundSize: "200% 200%",
+            }}
+          />
+        )}
+      </AnimatePresence>
+
+      <motion.div
+        style={isNoirGlass ? { x: translateX, y: translateY } : undefined}
+        className="fixed inset-0 pointer-events-none z-0"
+      >
+        <Vignette colorTheme={colorTheme} intensity={0.4} isDark={isDark} />
+      </motion.div>
       <Header
         isDark={isDark}
         onThemeToggle={toggleTheme}
@@ -178,14 +308,17 @@ export function App() {
       <main className="pt-24 sm:pt-16 pb-10 md:pb-0 md:flex-1 overflow-hidden px-8  max-w-7xl mx-auto  md:flex md:flex-col">
         {/* Title Section */}
         <div className="text-center mb-12 sm:mb-16 md:mb-8">
-          <h1 className="text-5xl sm:text-7xl md:text-5xl font-black tracking-tight text-text mb-4 text-balance">
+          <ThemedHeading
+            as="h1"
+            className="text-5xl sm:text-7xl md:text-5xl font-black tracking-tight text-text mb-4 text-balance"
+          >
             ayush patel
-          </h1>
+          </ThemedHeading>
           <p className="text-base sm:text-lg md:text-base text-text-muted max-w-2xl mx-auto text-pretty">
             <AnimatedYear />
           </p>
           <div className="mt-4">
-            <Socials />
+            <Socials colorTheme={colorTheme} />
           </div>
         </div>
 

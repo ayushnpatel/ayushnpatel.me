@@ -1,0 +1,46 @@
+/* ============================================
+   MATRIX INK THEME
+   ============================================
+   
+   A digital, matrix-inspired theme with:
+   - Bright green tones reminiscent of terminal screens
+   - High contrast for readability
+   - Subtle tech aesthetic
+============================================ */
+
+/* ============================================
+   CSS VARIABLES
+============================================ */
+[data-color-theme="matrix-ink"] {
+  --color-primary-500: oklch(0.68 0.18 140);
+  --color-primary-600: oklch(0.6 0.17 140);
+  --color-primary-700: oklch(0.5 0.16 140);
+  --color-background: #e5f5ec;
+  --vignette-color-1: #14532d;
+  --vignette-color-2: #bbf7d0;
+  --vignette-color-3: #86efac;
+  --vignette-color-4: #4ade80;
+  --vignette-color-5: #22c55e;
+  --vignette-color-6: #166534;
+}
+
+[data-color-theme="matrix-ink"].dark {
+  --color-background: #020c08;
+  --vignette-color-1: #020c08;
+  --vignette-color-2: #064e3b;
+  --vignette-color-3: #059669;
+  --vignette-color-4: #22c55e;
+  --vignette-color-5: #bbf7d0;
+  --vignette-color-6: #4ade80;
+}
+
+/* ============================================
+   SURFACE STYLING - Dark Mode
+============================================ */
+[data-color-theme="matrix-ink"].dark .bg-surface,
+[data-color-theme="matrix-ink"].dark .bg-card {
+  background-color: #020c08;
+  border: 1px solid #064e3b;
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.75);
+}
+

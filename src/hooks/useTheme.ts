@@ -6,7 +6,25 @@ export type ColorTheme =
   | "amaretto"
   | "burgundy"
   | "boring"
-  | "neo-brutalism";
+  | "neo-brutalism"
+  | "cobalt"
+  | "indigo"
+  | "periwinkle"
+  | "slate"
+  | "ice"
+  | "midnight"
+  | "coral"
+  | "sandstone"
+  | "lavender"
+  | "rose"
+  | "copper"
+  | "peach"
+  | "charcoal"
+  | "noir-glass"
+  | "dawn-fade"
+  | "deep-space"
+  | "paperfolio"
+  | "matrix-ink";
 
 export function useTheme() {
   const [isDark, setIsDark] = useState(() => {
@@ -28,6 +46,24 @@ export function useTheme() {
         "burgundy",
         "boring",
         "neo-brutalism",
+        "cobalt",
+        "indigo",
+        "periwinkle",
+        "slate",
+        "ice",
+        "midnight",
+        "coral",
+        "sandstone",
+        "lavender",
+        "rose",
+        "copper",
+        "peach",
+        "charcoal",
+        "noir-glass",
+        "dawn-fade",
+        "deep-space",
+        "paperfolio",
+        "matrix-ink",
       ].includes(saved)
         ? (saved as ColorTheme)
         : "neo-brutalism";

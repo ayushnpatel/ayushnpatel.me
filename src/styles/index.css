@@ -1,0 +1,16 @@
+/* ============================================
+   MAIN STYLESHEET ENTRY POINT
+   ============================================
+   
+   This file imports all styles in the correct order:
+   1. Base styles (Tailwind, utilities, animations)
+   2. Theme definitions (simple and complex themes)
+   
+   To add a new theme:
+   - Simple themes (CSS vars only): Add to themes/simple-themes.css
+   - Complex themes (special behaviors): Create new file in themes/
+============================================ */
+
+@import "./base.css";
+@import "./themes/index.css";
+

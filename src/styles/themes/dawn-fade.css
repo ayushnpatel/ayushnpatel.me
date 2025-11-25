@@ -1,0 +1,54 @@
+/* ============================================
+   DAWN FADE THEME
+   ============================================
+   
+   A beautiful sunrise-inspired gradient theme with:
+   - Warm peach and coral tones
+   - Soft blue accents
+   - Gradient background in light mode
+============================================ */
+
+/* ============================================
+   CSS VARIABLES
+============================================ */
+[data-color-theme="dawn-fade"] {
+  --color-primary-500: oklch(0.78 0.18 35);
+  --color-primary-600: oklch(0.7 0.17 35);
+  --color-primary-700: oklch(0.6 0.16 35);
+  --color-background: oklch(0.98 0.03 90);
+  --vignette-color-1: #f97373;
+  --vignette-color-2: #fed7aa;
+  --vignette-color-3: #fbcfe8;
+  --vignette-color-4: #bfdbfe;
+  --vignette-color-5: #e0f2fe;
+  --vignette-color-6: #fb7185;
+}
+
+[data-color-theme="dawn-fade"].dark {
+  --color-background: #020617;
+  --vignette-color-1: #020617;
+  --vignette-color-2: #7f1d1d;
+  --vignette-color-3: #9f1239;
+  --vignette-color-4: #0369a1;
+  --vignette-color-5: #0ea5e9;
+  --vignette-color-6: #fde68a;
+}
+
+/* ============================================
+   GRADIENT BACKGROUND - Light Mode
+============================================ */
+[data-color-theme="dawn-fade"] body,
+[data-color-theme="dawn-fade"] html {
+  background: linear-gradient(
+    135deg,
+    #1f2933 0%,
+    #0b1120 10%,
+    #ffe4c4 35%,
+    #fed7aa 55%,
+    #bfdbfe 80%,
+    #e0f2fe 100%
+  );
+  background-attachment: fixed;
+  background-size: 120% 120%;
+}
+

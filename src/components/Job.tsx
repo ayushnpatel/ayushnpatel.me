@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { OptimizedImage } from "./OptimizedImage";
+import { useTheme } from "../hooks/useTheme";
+import { ThemedHeading } from "./ThemedHeading";
 
 interface JobProps {
   icon?: LucideIcon;
@@ -45,6 +47,9 @@ export function Job({
   showCarousel = false,
   disableAnimations = false,
 }: JobProps) {
+  const { colorTheme, isDark } = useTheme();
+  const isPaperfolio = colorTheme === "paperfolio";
+  const isNoirGlass = colorTheme === "noir-glass";
   const clampedImageCount = Math.min(Math.max(imageCount, 1), 4);
 
   const handleImageClick = (imageIndex: number) => {
@@ -103,9 +108,15 @@ export function Job({
         : {
             initial: "initial",
             exit: "exit",
+            whileHover:
+              isPaperfolio && !isExpanded
+                ? { rotateX: -2, rotateY: 3, y: -2 }
+                : undefined,
             custom: { isAbove },
           })}
       layout={!disableAnimations}
+      transition={{ type: "spring", stiffness: 200, damping: 16 }}
+      style={{ transformOrigin: "center center" }}
       onClick={(e) => e.stopPropagation()}
     >
       {/* Dotted divider - visible on all screen sizes */}
@@ -117,12 +128,39 @@ export function Job({
         <div className="flex items-start gap-4">
           {/* Icon - top aligned */}
           <div
-            className="shrink-0 rounded-full border-[3px] border-border-strong
-                       bg-surface-accent
-                       flex items-center justify-center
-                       shadow-md hover:shadow-lg
-                       transition-all duration-300 hover:-translate-x-0.5 hover:-translate-y-0.5
-                       w-14 h-14"
+            className={cn(
+              "shrink-0 rounded-full flex items-center justify-center w-14 h-14",
+              "transition-all duration-300 hover:-translate-x-0.5 hover:-translate-y-0.5",
+              isNoirGlass
+                ? "liquid-glass-icon"
+                : "border-[3px] border-border-strong bg-surface-accent shadow-md hover:shadow-lg"
+            )}
+            style={
+              isNoirGlass
+                ? isDark
+                  ? {
+                      background: `linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%)`,
+                      backdropFilter: "blur(12px) saturate(180%)",
+                      WebkitBackdropFilter: "blur(12px) saturate(180%)",
+                      border: "1px solid rgba(255, 255, 255, 0.2)",
+                      boxShadow: `
+                        0 4px 20px rgba(0, 0, 0, 0.25),
+                        0 0 15px rgba(56, 189, 248, 0.15),
+                        inset 0 1px 1px rgba(255, 255, 255, 0.35)
+                      `,
+                    }
+                  : {
+                      background: `linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.6) 100%)`,
+                      backdropFilter: "blur(12px) saturate(180%)",
+                      WebkitBackdropFilter: "blur(12px) saturate(180%)",
+                      border: "1px solid rgba(14, 165, 233, 0.25)",
+                      boxShadow: `
+                        0 4px 16px rgba(0, 0, 0, 0.1),
+                        inset 0 1px 1px rgba(255, 255, 255, 0.9)
+                      `,
+                    }
+                : undefined
+            }
           >
             {image ? (
               <OptimizedImage
@@ -142,17 +180,48 @@ export function Job({
           <div className="flex flex-col gap-1.5 min-w-0 flex-1">
             {/* Title + Date row */}
             <div className="flex items-start justify-between gap-3">
-              <h3 className="text-lg font-bold text-text leading-tight text-pretty">
+              <ThemedHeading
+                as="h3"
+                className="text-lg font-bold text-text leading-tight text-pretty"
+              >
                 {title}
-              </h3>
+              </ThemedHeading>
               {date && (
-                <p className="text-sm font-bold text-text leading-tight shrink-0">
+                <p
+                  className={cn(
+                    "text-sm font-bold leading-tight shrink-0",
+                    isNoirGlass
+                      ? isDark
+                        ? "text-sky-300/80"
+                        : "text-sky-700"
+                      : "text-text"
+                  )}
+                  style={
+                    isNoirGlass && isDark
+                      ? { textShadow: "0 0 6px rgba(56, 189, 248, 0.3)" }
+                      : undefined
+                  }
+                >
                   {date}
                 </p>
               )}
             </div>
             {/* Description - directly below title/date */}
-            <p className="text-[11px] text-text-muted text-pretty leading-snug">
+            <p
+              className={cn(
+                "text-[11px] text-pretty leading-snug",
+                isNoirGlass
+                  ? isDark
+                    ? "text-white/80"
+                    : "text-slate-600"
+                  : "text-text-muted"
+              )}
+              style={
+                isNoirGlass && isDark
+                  ? { textShadow: "0 1px 2px rgba(0, 0, 0, 0.3)" }
+                  : undefined
+              }
+            >
               {description}
             </p>
           </div>
@@ -165,13 +234,39 @@ export function Job({
             return (
               <div
                 key={i}
-                className="border-2 border-border-strong
-                           bg-secondary-subtle
-                           flex items-center justify-center
-                           shadow-sm hover:shadow-md
-                           transition-all duration-200
-                           hover:-translate-x-px hover:-translate-y-px
-                           w-[23%] aspect-square rounded-xs overflow-hidden cursor-pointer"
+                className={cn(
+                  "flex items-center justify-center transition-all duration-200",
+                  "hover:-translate-x-px hover:-translate-y-px",
+                  "w-[23%] aspect-square rounded-xs overflow-hidden cursor-pointer",
+                  isNoirGlass
+                    ? ""
+                    : "border-2 border-border-strong bg-secondary-subtle shadow-sm hover:shadow-md"
+                )}
+                style={
+                  isNoirGlass
+                    ? isDark
+                      ? {
+                          background: `linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.03) 100%)`,
+                          backdropFilter: "blur(10px) saturate(150%)",
+                          WebkitBackdropFilter: "blur(10px) saturate(150%)",
+                          border: "1px solid rgba(255, 255, 255, 0.15)",
+                          boxShadow: `
+                            0 4px 16px rgba(0, 0, 0, 0.2),
+                            inset 0 1px 1px rgba(255, 255, 255, 0.2)
+                          `,
+                        }
+                      : {
+                          background: `linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.5) 100%)`,
+                          backdropFilter: "blur(10px) saturate(150%)",
+                          WebkitBackdropFilter: "blur(10px) saturate(150%)",
+                          border: "1px solid rgba(14, 165, 233, 0.2)",
+                          boxShadow: `
+                            0 4px 12px rgba(0, 0, 0, 0.08),
+                            inset 0 1px 1px rgba(255, 255, 255, 0.8)
+                          `,
+                        }
+                    : undefined
+                }
                 onClick={() => handleImageClick(i)}
               >
                 {imageUrl ? (
@@ -200,12 +295,39 @@ export function Job({
           {/* Icon and Text - stays visible always */}
           <div className="flex items-center gap-2.5 lg:gap-3 min-w-0 flex-1 text-left">
             <div
-              className="shrink-0 rounded-full border-[3px] border-border-strong
-                       bg-surface-accent
-                       flex items-center justify-center
-                       shadow-md hover:shadow-lg
-                       transition-all duration-300 hover:-translate-x-0.5 hover:-translate-y-0.5
-                       w-12 h-12"
+              className={cn(
+                "shrink-0 rounded-full flex items-center justify-center w-12 h-12",
+                "transition-all duration-300 hover:-translate-x-0.5 hover:-translate-y-0.5",
+                isNoirGlass
+                  ? "liquid-glass-icon"
+                  : "border-[3px] border-border-strong bg-surface-accent shadow-md hover:shadow-lg"
+              )}
+              style={
+                isNoirGlass
+                  ? isDark
+                    ? {
+                        background: `linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%)`,
+                        backdropFilter: "blur(12px) saturate(180%)",
+                        WebkitBackdropFilter: "blur(12px) saturate(180%)",
+                        border: "1px solid rgba(255, 255, 255, 0.2)",
+                        boxShadow: `
+                          0 4px 20px rgba(0, 0, 0, 0.25),
+                          0 0 15px rgba(56, 189, 248, 0.15),
+                          inset 0 1px 1px rgba(255, 255, 255, 0.35)
+                        `,
+                      }
+                    : {
+                        background: `linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.6) 100%)`,
+                        backdropFilter: "blur(12px) saturate(180%)",
+                        WebkitBackdropFilter: "blur(12px) saturate(180%)",
+                        border: "1px solid rgba(14, 165, 233, 0.25)",
+                        boxShadow: `
+                          0 4px 16px rgba(0, 0, 0, 0.1),
+                          inset 0 1px 1px rgba(255, 255, 255, 0.9)
+                        `,
+                      }
+                  : undefined
+              }
             >
               {image ? (
                 <OptimizedImage
@@ -222,15 +344,46 @@ export function Job({
             </div>
 
             <div className="flex flex-col justify-center min-w-0">
-              <h3 className="text-lg lg:text-xl font-bold text-text leading-tight text-pretty">
+              <ThemedHeading
+                as="h3"
+                className="text-lg lg:text-xl font-bold text-text leading-tight text-pretty"
+              >
                 {title}
-              </h3>
+              </ThemedHeading>
               {date && (
-                <p className="text-xs lg:text-xs text-text-muted mt-0.5">
+                <p
+                  className={cn(
+                    "text-xs lg:text-xs mt-0.5",
+                    isNoirGlass
+                      ? isDark
+                        ? "text-sky-300/80"
+                        : "text-sky-700"
+                      : "text-text-muted"
+                  )}
+                  style={
+                    isNoirGlass && isDark
+                      ? { textShadow: "0 0 6px rgba(56, 189, 248, 0.3)" }
+                      : undefined
+                  }
+                >
                   {date}
                 </p>
               )}
-              <p className="text-xs lg:text-sm text-text-muted text-pretty max-w-md lg:max-w-lg mt-0.5">
+              <p
+                className={cn(
+                  "text-xs lg:text-sm text-pretty max-w-md lg:max-w-lg mt-0.5",
+                  isNoirGlass
+                    ? isDark
+                      ? "text-white/80"
+                      : "text-slate-600"
+                    : "text-text-muted"
+                )}
+                style={
+                  isNoirGlass && isDark
+                    ? { textShadow: "0 1px 2px rgba(0, 0, 0, 0.3)" }
+                    : undefined
+                }
+              >
                 {description}
               </p>
             </div>

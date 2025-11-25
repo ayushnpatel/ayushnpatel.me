@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 interface VignetteProps {
   intensity?: number; // 0-1, default 0.4 (optional override)
@@ -56,6 +57,12 @@ export function Vignette({ intensity, colorTheme, isDark }: VignetteProps) {
   const currentOffsetRef = useRef<THREE.Vector2>(new THREE.Vector2(0, 0)); // Current vignette offset
   const velocityRef = useRef<THREE.Vector2>(new THREE.Vector2(0, 0)); // Velocity for inertia
   const isDesktopRef = useRef<boolean>(false); // Track if desktop device
+
+  // Deep space effect: stronger vignette as you scroll down
+  const isDeepSpace = colorTheme === "deep-space";
+  const { scrollYProgress } = useScroll();
+  // Start slightly transparent and become fully opaque (max shader intensity) on scroll
+  const scrollOpacity = useTransform(scrollYProgress, [0, 1], [0.8, 1]);
 
   useEffect(() => {
     if (!canvasRef.current) return;
@@ -477,7 +484,7 @@ export function Vignette({ intensity, colorTheme, isDark }: VignetteProps) {
   }, [intensity, colorTheme, isDark]); // Depend on props directly, not calculated values
 
   return (
-    <canvas
+    <motion.canvas
       ref={canvasRef}
       className="fixed inset-0 pointer-events-none"
       style={{
@@ -486,6 +493,7 @@ export function Vignette({ intensity, colorTheme, isDark }: VignetteProps) {
         position: "fixed",
         top: 0,
         left: 0,
+        opacity: isDeepSpace ? scrollOpacity : 1,
       }}
     />
   );

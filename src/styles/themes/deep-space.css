@@ -1,0 +1,52 @@
+/* ============================================
+   DEEP SPACE THEME
+   ============================================
+   
+   A cosmic, nebula-inspired theme with:
+   - Deep purple and magenta tones
+   - Cyan accents
+   - Radial gradient nebula effect in dark mode
+============================================ */
+
+/* ============================================
+   CSS VARIABLES
+============================================ */
+[data-color-theme="deep-space"] {
+  --color-primary-500: oklch(0.55 0.16 280);
+  --color-primary-600: oklch(0.47 0.15 280);
+  --color-primary-700: oklch(0.38 0.14 280);
+  --color-background: oklch(0.97 0.02 260);
+  --vignette-color-1: #0b1026;
+  --vignette-color-2: #c7d2ff;
+  --vignette-color-3: #a855f7;
+  --vignette-color-4: #ec4899;
+  --vignette-color-5: #38bdf8;
+  --vignette-color-6: #1d1252;
+}
+
+[data-color-theme="deep-space"].dark {
+  --color-background: #020016;
+}
+
+/* ============================================
+   NEBULA BACKGROUND - Dark Mode
+============================================ */
+[data-color-theme="deep-space"].dark body,
+[data-color-theme="deep-space"].dark html,
+[data-color-theme="deep-space"].dark .bg-background {
+  background: radial-gradient(
+      circle at 10% 10%,
+      rgba(168, 85, 247, 0.25),
+      transparent 55%
+    ),
+    radial-gradient(circle at 80% 70%, rgba(56, 189, 248, 0.2), transparent 55%),
+    radial-gradient(
+      circle at 50% 20%,
+      rgba(236, 72, 153, 0.18),
+      transparent 60%
+    ),
+    #020016;
+  background-attachment: fixed;
+  background-size: cover;
+}
+

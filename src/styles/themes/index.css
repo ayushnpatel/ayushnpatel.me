@@ -1,0 +1,23 @@
+/* ============================================
+   THEME DEFINITIONS ENTRY POINT
+   ============================================
+   
+   Import order matters for CSS specificity:
+   1. Simple themes (CSS variables only)
+   2. Complex themes (special visual behaviors)
+   3. Neo-brutalism defaults (applied globally, then overridden)
+============================================ */
+
+/* Simple color themes - CSS variables only */
+@import "./simple-themes.css";
+
+/* Complex themes with special visual behaviors */
+@import "./noir-glass.css";
+@import "./dawn-fade.css";
+@import "./deep-space.css";
+@import "./paperfolio.css";
+@import "./matrix-ink.css";
+
+/* Neo-brutalism - default border/shadow styling + theme variant */
+@import "./neo-brutalism.css";
+

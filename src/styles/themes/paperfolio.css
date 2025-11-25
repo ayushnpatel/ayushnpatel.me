@@ -1,0 +1,58 @@
+/* ============================================
+   PAPERFOLIO THEME
+   ============================================
+   
+   A vintage paper-inspired theme with:
+   - Warm cream and sepia tones
+   - Paper texture overlay
+   - Soft, aged aesthetic
+============================================ */
+
+/* ============================================
+   CSS VARIABLES
+============================================ */
+[data-color-theme="paperfolio"] {
+  --color-primary-500: oklch(0.45 0.04 60);
+  --color-primary-600: oklch(0.38 0.04 60);
+  --color-primary-700: oklch(0.3 0.04 60);
+  --color-background: #f5ecde;
+  --vignette-color-1: #d0bfa4;
+  --vignette-color-2: #fdf6ec;
+  --vignette-color-3: #f4e5cc;
+  --vignette-color-4: #e3cfaf;
+  --vignette-color-5: #c9b394;
+  --vignette-color-6: #8c7051;
+}
+
+[data-color-theme="paperfolio"].dark {
+  --color-background: #1c1917;
+}
+
+/* ============================================
+   PAPER TEXTURE BACKGROUND
+============================================ */
+[data-color-theme="paperfolio"] body,
+[data-color-theme="paperfolio"] html {
+  background-color: #f5ecde;
+  background-image: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.02) 0px,
+      transparent 2px,
+      transparent 4px,
+      rgba(0, 0, 0, 0.02) 6px
+    ),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.4'/%3E%3C/svg%3E");
+  background-size: 100% 100%, 220px 220px;
+  background-attachment: fixed;
+}
+
+/* ============================================
+   SURFACE STYLING
+============================================ */
+[data-color-theme="paperfolio"] .bg-surface,
+[data-color-theme="paperfolio"] .bg-card {
+  background-color: #fdf6ec;
+  border: 1px solid #e5d5c2;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+}
+

@@ -1,0 +1,310 @@
+/* ============================================
+   NEO-BRUTALISM THEME + DEFAULT STYLING
+   ============================================
+   
+   This file contains:
+   1. Default neo-brutalism styling (applied to all themes)
+   2. Neo-brutalism theme-specific overrides (sharper, bolder)
+   
+   The default styling provides the signature:
+   - Bold black borders
+   - Hard drop shadows
+   - Offset transforms for 3D effect
+============================================ */
+
+/* ============================================
+   DEFAULT COMPONENT STYLING
+   Applied across ALL themes
+============================================ */
+button,
+.border,
+[class*="border"],
+[class*="border-"],
+div[class*="border"],
+div[class*="border-"] {
+  border-width: 3px !important;
+  border-style: solid !important;
+  border-color: #000000 !important;
+  box-shadow: 4px 4px 0px 0px #000000 !important;
+  transform: translate(-2px, -2px) !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+button:hover,
+.border:hover,
+[class*="border"]:hover,
+[class*="border-"]:hover,
+div[class*="border"]:hover,
+div[class*="border-"]:hover {
+  transform: translate(0px, 0px) !important;
+  box-shadow: 2px 2px 0px 0px #000000 !important;
+}
+
+button:active,
+.border:active,
+[class*="border"]:active,
+[class*="border-"]:active,
+div[class*="border"]:active,
+div[class*="border-"]:active {
+  transform: translate(2px, 2px) !important;
+  box-shadow: 0px 0px 0px 0px #000000 !important;
+}
+
+/* Override shadow utilities for elements without borders */
+[class*="shadow"]:not([class*="border"]):not(button) {
+  box-shadow: 4px 4px 0px 0px #000000 !important;
+}
+
+[class*="shadow"]:not([class*="border"]):not(button):hover {
+  box-shadow: 2px 2px 0px 0px #000000 !important;
+}
+
+[class*="shadow"]:not([class*="border"]):not(button):active {
+  box-shadow: 0px 0px 0px 0px #000000 !important;
+}
+
+/* ============================================
+   NEO-BRUTALISM THEME - CSS VARIABLES
+============================================ */
+[data-color-theme="neo-brutalism"] {
+  --color-primary-500: #a8a6ff;
+  --color-primary-600: #8b89ff;
+  --color-primary-700: #6d6bff;
+  --vignette-color-1: #a8a6ff;
+  --vignette-color-2: #ffa6f6;
+  --vignette-color-3: #b8ff9f;
+  --vignette-color-4: #ffd6a8;
+  --vignette-color-5: #a6d6ff;
+  --vignette-color-6: #ffa6d6;
+}
+
+[data-color-theme="neo-brutalism"].dark {
+  --color-background: #0a0a0a; /* Deep dark base */
+  --color-primary-500: #ff00ff;
+  --color-primary-600: #cc00cc;
+  --color-primary-700: #990099;
+  --vignette-color-1: #ff00ff;
+  --vignette-color-2: #00ffff;
+  --vignette-color-3: #8000ff;
+  --vignette-color-4: #ff0080;
+  --vignette-color-5: #00ff80;
+  --vignette-color-6: #ff8000;
+}
+
+/* ============================================
+   NEO-BRUTALISM GRADIENT BACKGROUND - Light Mode
+============================================ */
+[data-color-theme="neo-brutalism"] body,
+[data-color-theme="neo-brutalism"] html {
+  position: relative;
+  background: 
+    /* Sophisticated gradient with better color flow and saturation */ linear-gradient(
+    135deg,
+    #f0e5ff 0%,
+    #e0c5ff 18%,
+    #ffc5f0 36%,
+    #ffe5c5 54%,
+    #c5ffe5 72%,
+    #c5f0ff 90%,
+    #e5e5ff 100%
+  );
+  background-attachment: fixed;
+  background-size: 100% 100%;
+}
+
+/* Grain overlay for sand-like texture - refined for light mode */
+[data-color-theme="neo-brutalism"] body::before,
+[data-color-theme="neo-brutalism"] html::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background-image: 
+    /* Fine grid texture */ repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.02) 0px,
+      transparent 1px,
+      transparent 1px,
+      rgba(0, 0, 0, 0.02) 2px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.02) 0px,
+      transparent 1px,
+      transparent 1px,
+      rgba(0, 0, 0, 0.02) 2px
+    ),
+    /* Coarse noise texture */
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='2.2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.35'/%3E%3C/svg%3E");
+  background-size: 3px 3px, 3px 3px, 180px 180px;
+  mix-blend-mode: overlay;
+  opacity: 0.65;
+  z-index: 0;
+}
+
+/* ============================================
+   NEO-BRUTALISM GRADIENT BACKGROUND - Dark Mode
+============================================ */
+[data-color-theme="neo-brutalism"].dark body,
+[data-color-theme="neo-brutalism"].dark html,
+[data-color-theme="neo-brutalism"].dark .bg-background {
+  position: relative;
+  background: 
+    /* Dark, high-contrast gradient with neon accents */ linear-gradient(
+      135deg,
+      #1a0a1a 0%,
+      #0a0a1a 15%,
+      #1a0a2a 30%,
+      #0a1a0a 45%,
+      #1a1a0a 60%,
+      #0a0a2a 75%,
+      #1a0a1a 90%,
+      #0a0a0a 100%
+    ),
+    /* Neon accent overlay */
+      radial-gradient(
+        circle at 30% 30%,
+        rgba(255, 0, 255, 0.15) 0%,
+        transparent 50%
+      ),
+    radial-gradient(
+      circle at 70% 70%,
+      rgba(0, 255, 255, 0.15) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(128, 0, 255, 0.1) 0%,
+      transparent 60%
+    ) !important;
+  background-attachment: fixed;
+  background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+}
+
+/* Grain overlay for sand-like texture - stronger for dark mode */
+[data-color-theme="neo-brutalism"].dark body::before,
+[data-color-theme="neo-brutalism"].dark html::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background-image: 
+    /* Fine grain texture */ repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.02) 0px,
+      transparent 1px,
+      transparent 1px,
+      rgba(255, 255, 255, 0.02) 2px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.02) 0px,
+      transparent 1px,
+      transparent 1px,
+      rgba(255, 255, 255, 0.02) 2px
+    ),
+    /* Coarse noise texture */
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='2.5' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.4'/%3E%3C/svg%3E");
+  background-size: 3px 3px, 3px 3px, 150px 150px;
+  mix-blend-mode: overlay;
+  opacity: 0.8;
+  z-index: 0;
+}
+
+/* Enhanced text contrast for dark mode */
+[data-color-theme="neo-brutalism"].dark {
+  --color-text: #ffffff;
+  --color-text-muted: #e0e0e0;
+  --color-text-subtle: #c0c0c0;
+}
+
+/* ============================================
+   NEO-BRUTALISM THEME - Sharper Styling
+============================================ */
+[data-color-theme="neo-brutalism"] button,
+[data-color-theme="neo-brutalism"] .border,
+[data-color-theme="neo-brutalism"] [class*="border"],
+[data-color-theme="neo-brutalism"] [class*="border-"],
+[data-color-theme="neo-brutalism"] div[class*="border"],
+[data-color-theme="neo-brutalism"] div[class*="border-"] {
+  border-width: 4px !important;
+  border-style: solid !important;
+  border-color: #000000 !important;
+  box-shadow: 6px 6px 0px 0px #000000 !important;
+  transform: translate(-3px, -3px) !important;
+}
+
+[data-color-theme="neo-brutalism"] button:hover,
+[data-color-theme="neo-brutalism"] .border:hover,
+[data-color-theme="neo-brutalism"] [class*="border"]:hover,
+[data-color-theme="neo-brutalism"] [class*="border-"]:hover,
+[data-color-theme="neo-brutalism"] div[class*="border"]:hover,
+[data-color-theme="neo-brutalism"] div[class*="border-"]:hover {
+  transform: translate(0px, 0px) !important;
+  box-shadow: 3px 3px 0px 0px #000000 !important;
+}
+
+[data-color-theme="neo-brutalism"] button:active,
+[data-color-theme="neo-brutalism"] .border:active,
+[data-color-theme="neo-brutalism"] [class*="border"]:active,
+[data-color-theme="neo-brutalism"] [class*="border-"]:active,
+[data-color-theme="neo-brutalism"] div[class*="border"]:active,
+[data-color-theme="neo-brutalism"] div[class*="border-"]:active {
+  transform: translate(3px, 3px) !important;
+  box-shadow: 0px 0px 0px 0px #000000 !important;
+}
+
+[data-color-theme="neo-brutalism"]
+  [class*="shadow"]:not([class*="border"]):not(button) {
+  box-shadow: 6px 6px 0px 0px #000000 !important;
+}
+
+[data-color-theme="neo-brutalism"]
+  [class*="shadow"]:not([class*="border"]):not(button):hover {
+  box-shadow: 3px 3px 0px 0px #000000 !important;
+}
+
+[data-color-theme="neo-brutalism"]
+  [class*="shadow"]:not([class*="border"]):not(button):active {
+  box-shadow: 0px 0px 0px 0px #000000 !important;
+}
+
+/* ============================================
+   FONT STYLING - Applied Globally
+============================================ */
+.font-display,
+.font-heading {
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: -0.05em !important;
+  font-family: "Lexend Mega", sans-serif !important;
+}
+
+.font-sans,
+.font-body {
+  font-family: "Lexend Mega", sans-serif !important;
+}
+
+/* ============================================
+   SURFACE STYLING
+============================================ */
+[data-color-theme="neo-brutalism"] .bg-surface,
+[data-color-theme="neo-brutalism"] .bg-card {
+  background-color: #ffffff;
+  border: 4px solid #000000 !important;
+  box-shadow: 6px 6px 0px 0px #000000 !important;
+}
+
+[data-color-theme="neo-brutalism"].dark .bg-surface,
+[data-color-theme="neo-brutalism"].dark .bg-card {
+  background-color: #1a1a1a;
+  border: 4px solid #000000 !important;
+  box-shadow: 6px 6px 0px 0px #000000 !important;
+}
+

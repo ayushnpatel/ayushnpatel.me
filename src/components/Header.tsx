@@ -9,6 +9,7 @@ import { SpinningGalaxy } from "./SpinningGalaxy";
 import { ThemeButton } from "./ThemeButton";
 import { ColorPicker } from "./ColorPicker";
 import type { ColorTheme } from "../hooks/useTheme";
+import { cn } from "../lib/utils";
 
 interface HeaderProps {
   isDark: boolean;
@@ -90,12 +91,25 @@ export function Header({
       }
     : {};
 
+  const isNoirGlass = colorTheme === "noir-glass";
+
   return (
     <motion.header className="fixed top-0 left-0 right-0 z-50 px-4 py-3 sm:px-6 sm:py-4 md:px-6 md:py-4">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Left: Spinning Galaxy */}
-        <motion.div className="shrink-0" style={galaxyStyle}>
-          <SpinningGalaxy />
+        <motion.div
+          className={cn("shrink-0", isNoirGlass && isDark && "liquid-glass-galaxy")}
+          style={{
+            ...galaxyStyle,
+            ...(isNoirGlass && !isDark ? {
+              background: 'transparent',
+              border: 'none',
+              boxShadow: 'none',
+            } : {}),
+          }}
+          key={`galaxy-${isDark}`}
+        >
+          <SpinningGalaxy colorTheme={colorTheme} />
         </motion.div>
 
         {/* Center: Empty (title will be in main content) */}
@@ -103,8 +117,26 @@ export function Header({
 
         {/* Right: Color Picker and Theme Button */}
         <motion.div
-          className="shrink-0 flex items-center gap-2 sm:gap-3"
-          style={controlsStyle}
+          className={cn(
+            "shrink-0 flex items-center gap-2 sm:gap-3",
+            isNoirGlass && isDark && "liquid-glass-controls"
+          )}
+          style={{
+            ...controlsStyle,
+            ...(isNoirGlass && !isDark
+              ? {
+                  padding: "8px 12px",
+                  borderRadius: "9999px",
+                  background:
+                    "linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.5) 100%)",
+                  backdropFilter: "blur(16px) saturate(180%)",
+                  WebkitBackdropFilter: "blur(16px) saturate(180%)",
+                  border: "1px solid rgba(14, 165, 233, 0.2)",
+                  boxShadow:
+                    "0 4px 16px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.8)",
+                }
+              : {}),
+          }}
         >
           <ColorPicker
             currentTheme={colorTheme}
