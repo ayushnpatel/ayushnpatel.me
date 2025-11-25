@@ -290,13 +290,13 @@ export function Job({
       </div>
 
       {/* Desktop: Single-row layout - maintains horizontal layout even when expanded */}
-      <div className="hidden md:flex flex-col gap-4">
-        <div className="flex flex-row items-center justify-between gap-3 lg:gap-4">
+      <div className="hidden md:flex flex-col gap-4 xl:gap-5">
+        <div className="flex flex-row items-center justify-between gap-3 lg:gap-4 xl:gap-5">
           {/* Icon and Text - stays visible always */}
-          <div className="flex items-center gap-2.5 lg:gap-3 min-w-0 flex-1 text-left">
+          <div className="flex items-center gap-2.5 lg:gap-3 xl:gap-4 min-w-0 flex-1 text-left">
             <div
               className={cn(
-                "shrink-0 rounded-full flex items-center justify-center w-12 h-12",
+                "shrink-0 rounded-full flex items-center justify-center w-12 h-12 xl:w-14 xl:h-14",
                 "transition-all duration-300 hover:-translate-x-0.5 hover:-translate-y-0.5",
                 isNoirGlass
                   ? "liquid-glass-icon"
@@ -334,26 +334,26 @@ export function Job({
                   src={image}
                   alt={typeof title === "string" ? title : "Job"}
                   className="w-full h-full object-contain rounded-full"
-                  sizes="48px"
-                  width={48}
-                  height={48}
+                  sizes="(min-width: 1280px) 56px, 48px"
+                  width={56}
+                  height={56}
                 />
               ) : Icon ? (
-                <Icon className="text-accent w-6 h-6" strokeWidth={2.5} />
+                <Icon className="text-accent w-6 h-6 xl:w-7 xl:h-7" strokeWidth={2.5} />
               ) : null}
             </div>
 
             <div className="flex flex-col justify-center min-w-0">
               <ThemedHeading
                 as="h3"
-                className="text-lg lg:text-xl font-bold text-text leading-tight text-pretty"
+                className="text-lg lg:text-xl xl:text-2xl font-bold text-text leading-tight text-pretty"
               >
                 {title}
               </ThemedHeading>
               {date && (
                 <p
                   className={cn(
-                    "text-xs lg:text-xs mt-0.5",
+                    "text-xs lg:text-xs xl:text-sm mt-0.5",
                     isNoirGlass
                       ? isDark
                         ? "text-sky-300/80"
@@ -371,7 +371,7 @@ export function Job({
               )}
               <p
                 className={cn(
-                  "text-xs lg:text-sm text-pretty max-w-md lg:max-w-lg mt-0.5",
+                  "text-xs lg:text-sm xl:text-base text-pretty max-w-md lg:max-w-lg xl:max-w-xl mt-0.5",
                   isNoirGlass
                     ? isDark
                       ? "text-white/80"

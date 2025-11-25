@@ -307,14 +307,14 @@ export function App() {
 
       <main className="pt-24 sm:pt-16 pb-10 md:pb-0 md:flex-1 overflow-hidden px-8  max-w-7xl mx-auto  md:flex md:flex-col">
         {/* Title Section */}
-        <div className="text-center mb-12 sm:mb-16 md:mb-8">
+        <div className="text-center mb-12 sm:mb-16 md:mb-8 xl:mb-10">
           <ThemedHeading
             as="h1"
-            className="text-5xl sm:text-7xl md:text-5xl font-black tracking-tight text-text mb-4 text-balance"
+            className="text-5xl sm:text-7xl md:text-5xl xl:text-6xl font-black tracking-tight text-text mb-4 text-balance"
           >
             ayush patel
           </ThemedHeading>
-          <p className="text-base sm:text-lg md:text-base text-text-muted max-w-2xl mx-auto text-pretty">
+          <p className="text-base sm:text-lg md:text-base xl:text-lg text-text-muted max-w-2xl mx-auto text-pretty">
             <AnimatedYear />
           </p>
           <div className="mt-4">
@@ -395,7 +395,7 @@ export function App() {
                         onClick={(e) => e.stopPropagation()}
                       >
                         {/* Large Image and Caption */}
-                        <div className="flex items-center gap-3 lg:gap-4">
+                        <div className="flex items-center gap-3 lg:gap-4 xl:gap-5">
                           {/* Large Image */}
                           <motion.div
                             className="border-2 border-border-strong
@@ -442,7 +442,7 @@ export function App() {
                           {/* Caption - centered vertically and horizontally */}
                           <div className="flex-1 flex items-center justify-center">
                             <motion.div
-                              className="text-base lg:text-lg text-text-muted text-center max-w-md"
+                              className="text-base lg:text-lg xl:text-xl text-text-muted text-center max-w-md"
                               {...(disableAnimations
                                 ? {}
                                 : {
@@ -555,7 +555,7 @@ export function App() {
                     {/* Caption */}
                     {currentJob?.captions[selectedImageIndex] && (
                       <motion.div
-                        className="text-base md:text-lg lg:text-xl text-text-muted text-center max-w-2xl px-4 md:px-0"
+                        className="text-base md:text-lg lg:text-xl xl:text-2xl text-text-muted text-center max-w-2xl px-4 md:px-0"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.2, duration: 0.3 }}
