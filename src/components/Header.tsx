@@ -109,6 +109,7 @@ export function Header({
           <ColorPicker
             currentTheme={colorTheme}
             onThemeChange={onColorChange}
+            isDark={isDark}
           />
           <ThemeButton
             isDark={isDark}

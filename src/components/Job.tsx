@@ -94,7 +94,7 @@ export function Job({
   return (
     <motion.div
       className={cn(
-        "relative w-full max-w-5xl mx-auto mb-8 md:mb-24",
+        "relative w-full max-w-5xl md:max-w-7xl lg:max-w-[90rem] mb-8 md:mb-24",
         isExpanded && "mb-6 md:mb-12"
       )}
       variants={disableAnimations ? undefined : jobVariants}
@@ -230,14 +230,14 @@ export function Job({
                   {date}
                 </p>
               )}
-              <p className="text-xs lg:text-sm text-text-muted text-pretty max-w-md mt-0.5">
+              <p className="text-xs lg:text-sm text-text-muted text-pretty max-w-md lg:max-w-lg mt-0.5">
                 {description}
               </p>
             </div>
           </div>
 
           {/* Images - always show 3 small blurred images */}
-          <div className="flex gap-8 shrink-0">
+          {/* <div className="flex gap-8 shrink-0">
             {Array.from({ length: clampedImageCount }).map((_, i) => {
               const isHovered =
                 hoveredImage?.jobIndex === jobIndex &&
@@ -297,7 +297,7 @@ export function Job({
                 </motion.div>
               );
             })}
-          </div>
+          </div> */}
         </div>
       </div>
     </motion.div>

@@ -175,7 +175,7 @@ export function App() {
         onColorChange={setColorTheme}
       />
 
-      <main className="pt-24 sm:pt-16 pb-10 md:pb-0 md:flex-1 md:overflow-hidden px-8 sm:px-12 lg:px-8 max-w-7xl mx-auto md:flex md:flex-col">
+      <main className="pt-24 sm:pt-16 pb-10 md:pb-0 md:flex-1 overflow-hidden px-8  max-w-7xl mx-auto  md:flex md:flex-col">
         {/* Title Section */}
         <div className="text-center mb-12 sm:mb-16 md:mb-8">
           <h1 className="text-5xl sm:text-7xl md:text-5xl font-black tracking-tight text-text mb-4 text-balance">
@@ -203,7 +203,7 @@ export function App() {
               const shouldShow = selectedJob === null || isSelected;
 
               return shouldShow ? (
-                <motion.div key={job.index} className="relative">
+                <motion.div key={job.index} className="">
                   {/* Dotted divider - show between jobs on mobile only, hide immediately when any job is selected */}
                   {index > 0 && (
                     <AnimatePresence>

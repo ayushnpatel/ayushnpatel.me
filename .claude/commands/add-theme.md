@@ -103,9 +103,21 @@ Create a new theme that:
          - Consider theme-scoped overrides for borders, shadows, and card surfaces under `[data-color-theme="$1"] ...` similar to the neo-brutalism overrides.
        - Typography:
          - **Be conservative.** If you adjust fonts/weights/letter-spacing, keep readability high and consider scoping changes more narrowly than the current global overrides where appropriate.
-     - Keep these “extra” customizations **scoped** to `[data-color-theme="$1"]` so other themes remain unchanged.
+     - Keep these "extra" customizations **scoped** to `[data-color-theme="$1"]` so other themes remain unchanged.
 
-6. **Consider vignette intensity and behavior**
+6. **(For unique/custom themes) Add custom color picker background**
+
+   - If `$1` has a custom background (gradient, texture, or special styling) that differs from the standard `--color-background`:
+     - In @src/components/ColorPicker.tsx:
+       - Update the `getDropdownBackground()` function to handle `$1`:
+         - Check if `currentTheme === "$1"` and `isDark` state
+         - Apply the same gradient/background styling used in the theme's CSS (from step 5)
+         - Match the exact gradient values from `[data-color-theme="$1"] body, html` (light mode) and `[data-color-theme="$1"].dark body, html` (dark mode)
+         - For other themes, fall back to `backgroundColor: "var(--color-background)"`
+     - This ensures the color picker dropdown background matches the theme's unique visual identity, as seen with `neo-brutalism` which uses a multi-color gradient instead of a solid color.
+     - Example: `neo-brutalism` uses a sophisticated gradient in light mode (`#f0e5ff` → `#e0c5ff` → `#ffc5f0` → `#ffe5c5` → `#c5ffe5` → `#c5f0ff` → `#e5e5ff`) and a dark gradient with neon accents in dark mode.
+
+7. **Consider vignette intensity and behavior**
 
    - In @src/components/Vignette.tsx:
      - Review how `intensity` is derived:
@@ -115,7 +127,7 @@ Create a new theme that:
        - Be treated like `neo-brutalism` with a higher vignette intensity.
      - If needed, adjust the intensity logic to give `$1` a custom default without hard-coding overly theme-specific behavior.
 
-7. **Quality and accessibility checks**
+8. **Quality and accessibility checks**
 
    - Ensure:
      - Text/background contrast meets accessibility guidelines in both light and dark modes.
@@ -123,7 +135,7 @@ Create a new theme that:
      - Motion remains subtle and does not introduce jitter or readability issues.
    - Keep theme-specific quirks tasteful; this is a personal/professional site.
 
-8. **Explain the new theme**
+9. **Explain the new theme**
    - Add or update comments in @src/styles.css (and, if appropriate, in `useTheme.ts`) that briefly describe:
      - The intent of `$1` (e.g., “calm forest theme”, “high-contrast editorial theme”).
      - Any special considerations (e.g., why certain vignette colors or gradients were chosen).
