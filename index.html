@@ -56,12 +56,17 @@
       body {
         background-color: var(--initial-background);
         color: var(--initial-text);
-        min-height: 100%;
+        overflow-x: hidden;
       }
 
       #root {
-        min-height: 100vh;
         background-color: inherit;
+      }
+      
+      @media (min-width: 768px) {
+        html, body, #root {
+          height: 100%;
+        }
       }
 
       :root[data-color-theme="turquoise"] {

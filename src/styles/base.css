@@ -80,12 +80,13 @@
     @apply overflow-x-hidden;
   }
   body {
-    @apply bg-background;
+    @apply bg-background overflow-x-hidden;
     color: var(--color-text);
   }
   @media (min-width: 768px) {
     html,
-    body {
+    body,
+    #root {
       height: 100%;
     }
   }
@@ -540,4 +541,3 @@
     opacity: 0.12;
   }
 }
-

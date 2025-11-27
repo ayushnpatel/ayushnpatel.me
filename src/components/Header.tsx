@@ -26,6 +26,7 @@ export function Header({
 }: HeaderProps) {
   const { scrollYProgress } = useScroll();
   const [isMobile, setIsMobile] = useState(false);
+  const [hasScrollableContent, setHasScrollableContent] = useState(false);
 
   // Detect mobile screen size (below md breakpoint: 768px)
   useEffect(() => {
@@ -36,6 +37,19 @@ export function Header({
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // Check if there's actually scrollable content
+  useEffect(() => {
+    const checkScrollable = () => {
+      setHasScrollableContent(
+        document.documentElement.scrollHeight > window.innerHeight + 10
+      );
+    };
+
+    checkScrollable();
+    window.addEventListener("resize", checkScrollable);
+    return () => window.removeEventListener("resize", checkScrollable);
   }, []);
 
   // Create futuristic fade effect for mobile only
@@ -58,36 +72,38 @@ export function Header({
   // Create blur filter string using template
   const blurFilter = useMotionTemplate`blur(${mobileBlur}px)`;
 
-  const mobileScale = useTransform(
-    scrollYProgress,
-    [0.05, 0.2],
-    [1, 0.9], // Subtle scale down for depth effect
-    { clamp: true }
-  );
+  // const mobileScale = useTransform(
+  //   scrollYProgress,
+  //   [0.05, 0.2],
+  //   [1, 0.9], // Subtle scale down for depth effect
+  //   { clamp: true }
+  // );
 
-  const mobileTranslateY = useTransform(
-    scrollYProgress,
-    [0.05, 0.2],
-    [0, -15], // Upward movement as it fades
-    { clamp: true }
-  );
+  // const mobileTranslateY = useTransform(
+  //   scrollYProgress,
+  //   [0.05, 0.2],
+  //   [0, -15], // Upward movement as it fades
+  //   { clamp: true }
+  // );
 
-  // Only apply motion styles on mobile
-  const galaxyStyle = isMobile
+  // Only apply motion styles on mobile when there's scrollable content
+  const shouldApplyScrollEffects = isMobile && hasScrollableContent;
+
+  const galaxyStyle = shouldApplyScrollEffects
     ? {
         opacity: mobileOpacity,
         filter: blurFilter,
-        scale: mobileScale,
-        y: mobileTranslateY,
+        // scale: mobileScale,
+        // y: mobileTranslateY,
       }
     : {};
 
-  const controlsStyle = isMobile
+  const controlsStyle = shouldApplyScrollEffects
     ? {
         opacity: mobileOpacity,
         filter: blurFilter,
-        scale: mobileScale,
-        y: mobileTranslateY,
+        // scale: mobileScale,
+        // y: mobileTranslateY,
       }
     : {};
 
@@ -98,14 +114,19 @@ export function Header({
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Left: Spinning Galaxy */}
         <motion.div
-          className={cn("shrink-0", isNoirGlass && isDark && "liquid-glass-galaxy")}
+          className={cn(
+            "shrink-0",
+            isNoirGlass && isDark && "liquid-glass-galaxy"
+          )}
           style={{
             ...galaxyStyle,
-            ...(isNoirGlass && !isDark ? {
-              background: 'transparent',
-              border: 'none',
-              boxShadow: 'none',
-            } : {}),
+            ...(isNoirGlass && !isDark
+              ? {
+                  background: "transparent",
+                  border: "none",
+                  boxShadow: "none",
+                }
+              : {}),
           }}
           key={`galaxy-${isDark}`}
         >

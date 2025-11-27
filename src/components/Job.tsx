@@ -99,8 +99,8 @@ export function Job({
   return (
     <motion.div
       className={cn(
-        "relative w-full max-w-5xl md:max-w-7xl lg:max-w-[90rem] mb-8 md:mb-24",
-        isExpanded && "mb-6 md:mb-12"
+        "relative w-full max-w-5xl md:max-w-7xl lg:max-w-[90rem] mb-4 md:mb-24 xl:mb-16",
+        isExpanded && "mb-3 md:mb-12 xl:mb-10"
       )}
       variants={disableAnimations ? undefined : jobVariants}
       {...(disableAnimations
@@ -119,12 +119,12 @@ export function Job({
       style={{ transformOrigin: "center center" }}
       onClick={(e) => e.stopPropagation()}
     >
-      {/* Dotted divider - visible on all screen sizes */}
-      {showDivider && <div className="job-divider" />}
+      {/* Dotted divider - hidden on mobile */}
+      {showDivider && <div className="job-divider hidden md:block" />}
 
-      {/* Mobile: Three-row layout */}
-      <div className="md:hidden space-y-4">
-        {/* Row 1: Icon (left, top-aligned) | Title+Date (top) + Description (below) */}
+      {/* Mobile: Clean compact layout - icon + text only */}
+      <div className="md:hidden">
+        {/* Icon (left, top-aligned) | Title+Date (top) + Description (below) */}
         <div className="flex items-start gap-4">
           {/* Icon - top aligned */}
           <div
@@ -209,7 +209,7 @@ export function Job({
             {/* Description - directly below title/date */}
             <p
               className={cn(
-                "text-[11px] text-pretty leading-snug",
+                "text-[13px] text-pretty leading-snug",
                 isNoirGlass
                   ? isDark
                     ? "text-white/80"
@@ -225,67 +225,6 @@ export function Job({
               {description}
             </p>
           </div>
-        </div>
-
-        {/* Row 2: Images evenly spaced - always square, 30% smaller */}
-        <div className="flex items-center justify-between gap-4">
-          {Array.from({ length: clampedImageCount }).map((_, i) => {
-            const imageUrl = imageUrls[i] || "";
-            return (
-              <div
-                key={i}
-                className={cn(
-                  "flex items-center justify-center transition-all duration-200",
-                  "hover:-translate-x-px hover:-translate-y-px",
-                  "w-[23%] aspect-square rounded-xs overflow-hidden cursor-pointer",
-                  isNoirGlass
-                    ? ""
-                    : "border-2 border-border-strong bg-secondary-subtle shadow-sm hover:shadow-md"
-                )}
-                style={
-                  isNoirGlass
-                    ? isDark
-                      ? {
-                          background: `linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.03) 100%)`,
-                          backdropFilter: "blur(10px) saturate(150%)",
-                          WebkitBackdropFilter: "blur(10px) saturate(150%)",
-                          border: "1px solid rgba(255, 255, 255, 0.15)",
-                          boxShadow: `
-                            0 4px 16px rgba(0, 0, 0, 0.2),
-                            inset 0 1px 1px rgba(255, 255, 255, 0.2)
-                          `,
-                        }
-                      : {
-                          background: `linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.5) 100%)`,
-                          backdropFilter: "blur(10px) saturate(150%)",
-                          WebkitBackdropFilter: "blur(10px) saturate(150%)",
-                          border: "1px solid rgba(14, 165, 233, 0.2)",
-                          boxShadow: `
-                            0 4px 12px rgba(0, 0, 0, 0.08),
-                            inset 0 1px 1px rgba(255, 255, 255, 0.8)
-                          `,
-                        }
-                    : undefined
-                }
-                onClick={() => handleImageClick(i)}
-              >
-                {imageUrl ? (
-                  <OptimizedImage
-                    src={imageUrl}
-                    alt={`${title} image ${i + 1}`}
-                    className="w-full h-full object-cover"
-                    sizes="23vw"
-                    width={200}
-                    height={200}
-                  />
-                ) : (
-                  <span className="text-[10px] font-mono text-text-subtle">
-                    16×16
-                  </span>
-                )}
-              </div>
-            );
-          })}
         </div>
       </div>
 
@@ -339,7 +278,10 @@ export function Job({
                   height={56}
                 />
               ) : Icon ? (
-                <Icon className="text-accent w-6 h-6 xl:w-7 xl:h-7" strokeWidth={2.5} />
+                <Icon
+                  className="text-accent w-6 h-6 xl:w-7 xl:h-7"
+                  strokeWidth={2.5}
+                />
               ) : null}
             </div>
 

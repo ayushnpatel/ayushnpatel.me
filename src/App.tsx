@@ -180,7 +180,7 @@ export function App() {
 
   return (
     <div
-      className="min-h-screen md:h-screen md:overflow-hidden md:flex md:flex-col bg-background transition-colors duration-150 noise"
+      className="min-h-dvh md:h-screen overflow-x-hidden md:flex md:flex-col bg-background transition-colors duration-150 noise"
       onClick={handleMainClick}
       onMouseMove={
         !isNoirGlass
@@ -305,9 +305,9 @@ export function App() {
         onColorChange={setColorTheme}
       />
 
-      <main className="pt-24 sm:pt-16 pb-10 md:pb-0 md:flex-1 overflow-hidden px-8  max-w-7xl mx-auto  md:flex md:flex-col">
+      <main className="pt-24 sm:pt-16 pb-0 md:flex-1 overflow-hidden px-8 max-w-7xl mx-auto md:flex md:flex-col">
         {/* Title Section */}
-        <div className="text-center mb-12 sm:mb-16 md:mb-8 xl:mb-10">
+        <div className="text-center mb-6 sm:mb-16 md:mb-8 xl:mb-10">
           <ThemedHeading
             as="h1"
             className="text-5xl sm:text-7xl md:text-5xl xl:text-6xl font-black tracking-tight text-text mb-4 text-balance"
@@ -325,7 +325,7 @@ export function App() {
         {/* Jobs Section */}
         <div
           className={cn(
-            "space-y-8 md:space-y-0 relative z-50 md:flex-1 md:flex md:flex-col md:items-center",
+            "space-y-10 md:space-y-0 relative z-50 md:flex-1 md:flex md:flex-col md:items-center",
             selectedJob === null ? "md:justify-center" : "md:justify-start mt-8"
           )}
         >
@@ -337,24 +337,6 @@ export function App() {
 
               return shouldShow ? (
                 <motion.div key={job.index} className="">
-                  {/* Dotted divider - show between jobs on mobile only, hide immediately when any job is selected */}
-                  {index > 0 && (
-                    <AnimatePresence>
-                      {selectedJob === null && (
-                        <motion.div
-                          key={`divider-${job.index}`}
-                          className="absolute top-0 left-0 right-0 job-divider md:hidden"
-                          {...(disableAnimations
-                            ? {}
-                            : {
-                                initial: { opacity: 1 },
-                                exit: { opacity: 0 },
-                                transition: { duration: 0.15 },
-                              })}
-                        />
-                      )}
-                    </AnimatePresence>
-                  )}
                   <Job
                     image={job.image}
                     title={job.title}
