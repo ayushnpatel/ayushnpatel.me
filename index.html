@@ -19,12 +19,9 @@
             "neo-brutalism",
           ];
 
-          const prefersDark = window.matchMedia
-            ? window.matchMedia("(prefers-color-scheme: dark)").matches
-            : false;
           const isDark =
             storedTheme === "dark" ||
-            (!storedTheme && prefersDark && storedTheme !== "light");
+            (!storedTheme && true); // Default to dark mode
           const colorTheme = validColorThemes.includes(storedColorTheme ?? "")
             ? storedColorTheme
             : "green";
@@ -119,6 +116,10 @@
 
       :root[data-color-theme="neo-brutalism"].dark {
         --initial-background: #0a0a0a;
+      }
+
+      :root[data-color-theme="green"].dark {
+        --initial-background: #2f463d;
       }
 
       /* Initial loading overlay styles */

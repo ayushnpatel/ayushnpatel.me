@@ -28,14 +28,14 @@ export type ColorTheme =
 
 export function useTheme() {
   const [isDark, setIsDark] = useState(() => {
-    if (typeof window === "undefined") return false;
+    if (typeof window === "undefined") return true;
     const saved = localStorage.getItem("theme");
     if (saved) return saved === "dark";
-    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+    return true; // Default to dark mode
   });
 
   const [colorTheme, setColorTheme] = useState<ColorTheme>(() => {
-    if (typeof window === "undefined") return "neo-brutalism";
+    if (typeof window === "undefined") return "green";
     const saved = localStorage.getItem("colorTheme");
     const theme =
       saved &&
@@ -66,7 +66,7 @@ export function useTheme() {
         "matrix-ink",
       ].includes(saved)
         ? (saved as ColorTheme)
-        : "neo-brutalism";
+        : "green";
     // Set attribute immediately to avoid flash
     document.documentElement.setAttribute("data-color-theme", theme);
     return theme;
